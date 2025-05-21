@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Registered Patients</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>Registered Patients</h1>
+  <ul id="patient-list"></ul>
+
+  <script src="https://cdn.jsdelivr.net/npm/@electric-sql/pglite/dist/index.js"></script>
+  <script type="module">
+    import { PGlite } from "https://cdn.jsdelivr.net/npm/@electric-sql/pglite/dist/index.js";
+
+    const db = new PGlite("idb://patient-db");
+
+    async function getPatients() {
+      const result = await db.query("SELECT * FROM patients ORDER BY created_at DESC");
+      return result.rows;
+    }
+
+    function renderPatients(patients) {
+      const list = document.getElementById("patient-list");
+      list.innerHTML = "";
+      patients.forEach((patient) => {
+        const item = document.createElement("li");
+        item.textContent = `${patient.first_name} ${patient.last_name}`;
+        list.appendChild(item);
+      });
+    }
+
+    getPatients().then(renderPatients);
+  </script>
+</body>
+</html>
