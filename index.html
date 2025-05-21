@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Patient Registration</title>
+</head>
+<body>
+  <h1>Patient Registration</h1>
+  <form id="registration-form">
+    <input type="text" id="first-name" placeholder="First Name" required />
+    <input type="text" id="last-name" placeholder="Last Name" required />
+    <input type="date" id="dob" placeholder="Date of Birth" required />
+    <input type="text" id="gender" placeholder="Gender" required />
+    <input type="email" id="email" placeholder="Email" />
+    <input type="tel" id="phone" placeholder="Phone" />
+    <textarea id="address" placeholder="Address"></textarea>
+    <button type="submit">Register</button>
+  </form>
+  <h2>Registered Patients</h2>
+  <ul id="patient-list"></ul>
+
+  <script src="https://cdn.jsdelivr.net/npm/@electric-sql/pglite/dist/index.js"></script>
+  <script type="module" src="src/App.jsx"></script>
+</body>
+</html>
