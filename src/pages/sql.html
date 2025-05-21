@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SQL Query Executor</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    textarea { width: 100%; margin-bottom: 10px; }
+    pre { background-color: #f4f4f4; padding: 10px; border: 1px solid #ddd; }
+    button { padding: 10px 15px; background-color: #007bff; color: white; border: none; cursor: pointer; }
+    button:hover { background-color: #0056b3; }
+  </style>
+</head>
+<body>
+  <h1>SQL Query Executor</h1>
+  <form id="sql-form">
+    <label for="sql-query">Enter SQL Query:</label>
+    <textarea id="sql-query" name="sql-query" rows="6" placeholder="Write your SQL query here..."></textarea><br>
+    <button type="submit">Execute Query</button>
+  </form>
+
+  <h2>Query Result:</h2>
+  <pre id="result"></pre>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.6.1/sql-wasm.js"></script>
+  <script>
+    let db;
+
+    // Initialize the database
+    async function initDatabase() {
+      const SQL = await initSqlJs({ locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.6.1/${file}` });
+      db = new SQL.Database();
+      db.run(`
+        CREATE TABLE IF NOT EXISTS patients (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          first_name TEXT NOT NULL,
+          last_name TEXT NOT NULL,
+          date_of_birth DATE NOT NULL,
+          gender TEXT NOT NULL,
+          email TEXT,
+          phone TEXT,
+          address TEXT,
+          image TEXT,
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+      `);
+    }
+
+    // Execute the SQL query
+    async function executeQuery(query) {
+      try {
+        const result = db.exec(query);
+        document.getElementById('result').textContent = JSON.stringify(result, null, 2);
+      } catch (error) {
+        document.getElementById('result').textContent = `Error: ${error.message}`;
+      }
+    }
+
+    // Handle form submission
+    document.getElementById('sql-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const query = document.getElementById('sql-query').value;
+      executeQuery(query);
+    });
+
+    // Initialize the database on page load
+    window.onload = initDatabase;
+  </script>
+</body>
+</html>
