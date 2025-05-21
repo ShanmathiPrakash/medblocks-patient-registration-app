@@ -71,3 +71,4 @@ initDatabase().then(async () => {
   const patients = await getPatients();
   renderPatients(patients);
 });
+
