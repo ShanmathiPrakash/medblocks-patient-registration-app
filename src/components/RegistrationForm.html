@@ -8,13 +8,15 @@
 </head>
 
 <body>
+
+   <div id="common-layout"></div>
+  <div class="container">
+    <aside class="sidebar">
+      <!-- Sidebar content here -->
+    </aside>
+    <main class="main-content">
+
   <h1>Patient Registration</h1>
-
-    <!-- Tab navigation -->
-    <div class="tabs">
-      <a href="RegisteredPatientList.html">Patient List</a>
-    </div>
-
 
   <form id="registration-form">
     <input type="text" id="first-name" placeholder="First Name" required />
@@ -29,9 +31,20 @@
 
     <button type="submit">Register</button>
   </form>
+  </main>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@electric-sql/pglite/dist/index.js"></script>
   <script type="module">
+
+    // Load common layout (header + sidebar)
+    fetch('../components/layout.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('common-layout').innerHTML = data;
+      });
+
+
     import { PGlite } from "https://cdn.jsdelivr.net/npm/@electric-sql/pglite/dist/index.js";
 
     const db = new PGlite("idb://patient-db");

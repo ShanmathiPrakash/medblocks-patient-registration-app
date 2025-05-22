@@ -3,27 +3,44 @@
 <head>
   <meta charset="UTF-8">
   <title>SQL Query Executor</title>
+  <link rel="stylesheet" href="../css/styles.css">
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    textarea { width: 100%; margin-bottom: 10px; }
+    body { font-family: Arial, sans-serif; margin: 10px; }
+    textarea { width: 84%; margin-bottom: 10px; margin-top: 18px; margin-right: 200px;}
     pre { background-color: #f4f4f4; padding: 10px; border: 1px solid #ddd; }
-    button { padding: 10px 15px; background-color: #007bff; color: white; border: none; cursor: pointer; }
+    button { padding: 10px 15px; background-color: #007bff; color: white; border: none; cursor: pointer; margin-left: 1000px;}
     button:hover { background-color: #0056b3; }
   </style>
 </head>
 <body>
+  <div id="common-layout"></div>
+  <div class="container">
+      <aside class="sidebar">
+        <!-- Sidebar content here -->
+      </aside>
+      <main class="main-content">
+      
   <h1>SQL Query Executor</h1>
   <form id="sql-form">
-    <label for="sql-query">Enter SQL Query:</label>
+    <label for="sql-query" margin-top:18px>Enter SQL Query:</label>
     <textarea id="sql-query" name="sql-query" rows="6" placeholder="Write your SQL query here..."></textarea><br>
     <button type="submit">Execute Query</button>
   </form>
 
   <h2>Query Result:</h2>
   <pre id="result"></pre>
+</main>
+    </div>
+
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.6.1/sql-wasm.js"></script>
   <script>
+     fetch('../components/layout.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('common-layout').innerHTML = data;
+      });
+
     let db;
 
     // Initialize the database

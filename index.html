@@ -7,16 +7,16 @@
 </head>
 <body>
 
-  <div id="common-layout"></div>
-<div class="container">
-    <aside class="sidebar">
-      <!-- Sidebar content here -->
-    </aside>
-    <main class="main-content">
-      <h2>Welcome to Our Healthcare Portal !</h2>
-      <!-- Page-specific content here -->
-    </main>
-  </div>
+    <div id="common-layout"></div>
+  <div class="container">
+      <aside class="sidebar">
+        <!-- Sidebar content here -->
+      </aside>
+      <main class="main-content">
+        <h2>Welcome to Our Healthcare Portal !</h2>
+        <!-- Page-specific content here -->
+      </main>
+    </div>
 
   <script>
     // Load common layout (header + sidebar)
@@ -25,6 +25,7 @@
       .then(data => {
         document.getElementById('common-layout').innerHTML = data;
       });
+
   </script>
 </body>
 </html>

@@ -4,6 +4,7 @@
 1.Layout page
 2.Registration form
 3.Layout icons
+4.RegisteredPatientList
 */
 
 
@@ -116,7 +117,7 @@ body {
   margin-bottom:100px;
     padding: 20px;
   background-color:white;
- margin-top: -250px;
+ margin-top: -450px;
   position: relative;
    flex-grow: 1;
   
@@ -202,4 +203,139 @@ button[type="submit"]:hover {
   }
 }
 
+/* 4.RegisteredPatientList */
+/* Reset and basic styles */
+* {
+  box-sizing: border-box;
+}
 
+body {
+  font-family: 'Open Sans', sans-serif;
+  margin: 0;
+  padding: 20px;
+}
+
+/* Table styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* View icon styling */
+.view-icon {
+  cursor: pointer;
+  color: #007bff;
+  text-decoration: underline;
+}
+
+.view-icon:hover {
+  color: #0056b3;
+}
+
+/* Modal styling */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+  padding-top: 60px;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 5% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 600px;
+  gap:90px;
+   margin-bottom: 15px; /* Adds space below each field */
+}
+.modal-content h2{
+  line-height: 2;
+}
+/* Modal Text Styling */
+.modal-content p {
+  margin-bottom: 15px; /* Increased margin for better spacing between paragraphs */
+  line-height: 1.6; /* Improved readability */
+}
+
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Send button */
+.send-message-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.send-message-btn:hover {
+  background-color: #0056b3;
+}
+
+.send-message-btn:disabled {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Textarea styling */
+#message-textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  resize: none;
+}
+
+/* Search bar */
+#search-input {
+  width: 40%;
+  max-width: 250px;
+  padding: 10px;
+  margin-bottom: 40px;
+  margin-left: 51rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
