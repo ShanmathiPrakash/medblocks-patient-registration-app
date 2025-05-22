@@ -4,29 +4,295 @@
   <meta charset="UTF-8">
   <title>Registered Patients</title>
   <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Table styling */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+    /* View icon styling */
+    .view-icon {
+      cursor: pointer;
+      color: #007bff;
+      text-decoration: underline;
+    }
+    .view-icon:hover {
+      color: #0056b3;
+    }
+    /* Modal styling */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgb(0,0,0);
+      background-color: rgba(0,0,0,0.4);
+      padding-top: 60px;
+    }
+    .modal-content {
+      background-color: #fefefe;
+      margin: 5% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 600px;
+    }
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .send-message-btn {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    .send-message-btn:hover {
+      background-color: #0056b3;
+    }
+    /* Textarea styling */
+#message-textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  resize: none;
+}
+.send-message-btn:disabled {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+#search-input {
+  width: 40%;
+  max-width: 400px; /* Adjust as needed */
+  padding: 10px;
+  margin-top: 5px;
+  margin-left:50rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  box-sizing: border-box; /* Ensures padding doesn't affect width */
+}
+
+  </style>
 </head>
 <body>
   <h1>Registered Patients</h1>
-  <ul id="patient-list"></ul>
+
+  <input type="text" id="search-input" placeholder="Search by name..." onkeyup="filterTable()">
+
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Action</th>
+        <th>Message</th>
+      </tr>
+    </thead>
+    <tbody id="patient-list"></tbody>
+  </table>
+
+  <!-- Modal -->
+  <div id="patient-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Patient Details</h2>
+      <p><strong>Name:</strong> <span id="modal-name"></span></p>
+      <p><strong>Phone:</strong> <span id="modal-phone"></span></p>
+      <p><strong>Email:</strong> <span id="modal-email"></span></p>
+      <p><strong>Address:</strong> <span id="modal-address"></span></p>
+      <p><strong>Date of Birth:</strong> <span id="modal-dob"></span></p>
+      <p><strong>Gender:</strong> <span id="modal-gender"></span></p>
+    <textarea id="message-textarea" placeholder="Type your message here..." rows="4" cols="50"></textarea>
+<button class="send-message-btn" id="send-message" disabled>Send WhatsApp Message</button>
+
+    </div>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@electric-sql/pglite/dist/index.js"></script>
+  
   <script type="module">
+
     import { PGlite } from "https://cdn.jsdelivr.net/npm/@electric-sql/pglite/dist/index.js";
 
     const db = new PGlite("idb://patient-db");
+
+    
+//Search bar
+window.filterTable=function() {
+  const input = document.getElementById('search-input');
+  const filter = input.value.toUpperCase();
+  const table = document.getElementById('patient-list');
+  const rows = table.getElementsByTagName('tr');
+
+  for (let i = 0; i < rows.length; i++) {
+    const cells = rows[i].getElementsByTagName('td');
+    if (cells.length > 0) {
+      const nameCell = cells[0];
+        const phoneCell = cells[1];
+      const nameText = nameCell.textContent || nameCell.innerText;
+        const phoneText = phoneCell.textContent || phoneCell.innerText;
+      const combinedText = nameText + ' ' + phoneText;
+      // for normalizing the phone numer format
+      const normalizedPhone = phoneText.replace(/\D/g, '');
+const normalizedFilter = filter.replace(/\D/g, '');
+if (nameText.toUpperCase().indexOf(filter) > -1 || normalizedPhone.indexOf(normalizedFilter) > -1) {
+  rows[i].style.display = '';
+} else {
+  rows[i].style.display = 'none';
+}
+//
+     rows[i].style.display = nameText.toUpperCase().indexOf(filter) > -1 ? '' : 'none';
+        
+    }
+  }
+}
+  //
+
 
     async function getPatients() {
       const result = await db.query("SELECT * FROM patients ORDER BY created_at DESC");
       return result.rows;
     }
 
+  // Message area in pop up
+ const textarea = document.getElementById('message-textarea');
+  const sendMessageBtn = document.getElementById('send-message');
+  //
+
+ 
     function renderPatients(patients) {
       const list = document.getElementById("patient-list");
       list.innerHTML = "";
       patients.forEach((patient) => {
-        const item = document.createElement("li");
-        item.textContent = `${patient.first_name} ${patient.last_name}`;
-        list.appendChild(item);
+        const row = document.createElement("tr");
+
+        const nameCell = document.createElement("td");
+        nameCell.textContent = `${patient.first_name} ${patient.last_name}`;
+        row.appendChild(nameCell);
+
+        const phoneCell = document.createElement("td");
+        phoneCell.textContent = patient.phone || "N/A";
+        row.appendChild(phoneCell);
+
+        const actionCell = document.createElement("td");
+        const viewIcon = document.createElement("span");
+        viewIcon.textContent = "🔍";
+        viewIcon.classList.add("view-icon");
+        viewIcon.onclick = () => openModal(patient);
+        actionCell.appendChild(viewIcon);
+        row.appendChild(actionCell);
+
+        list.appendChild(row);
+
+        const messageCell = document.createElement("td");
+        const sendMessageBtn = document.createElement("button");
+        sendMessageBtn.classList.add("send-message-btn");
+        sendMessageBtn.textContent = "Remainder";
+        sendMessageBtn.onclick = () => sendMessage(patient.phone);
+        messageCell.appendChild(sendMessageBtn);
+        row.appendChild(messageCell);
+
+
+      });
+       // Reapply the filter after rendering
+  filterTable();
+    }
+
+    function openModal(patient) {
+      document.getElementById("modal-name").textContent = `${patient.first_name} ${patient.last_name}`;
+      document.getElementById("modal-phone").textContent = patient.phone || "N/A";
+      document.getElementById("modal-email").textContent = patient.email || "N/A";
+      document.getElementById("modal-address").textContent = patient.address || "N/A";
+      document.getElementById("modal-dob").textContent = patient.date_of_birth || "N/A";
+      document.getElementById("modal-gender").textContent = patient.gender || "N/A";
+
+      const sendMessageBtn = document.getElementById("send-message");
+      sendMessageBtn.onclick = () => sendMessage(patient.phone);
+
+      document.getElementById("patient-modal").style.display = "block";
+    }
+
+    document.querySelector(".close").onclick = () => {
+      document.getElementById("patient-modal").style.display = "none";
+    };
+
+    window.onclick = (event) => {
+      if (event.target == document.getElementById("patient-modal")) {
+        document.getElementById("patient-modal").style.display = "none";
+      }
+    };
+
+    //disabling the message tab in modal
+     textarea.addEventListener('input', () => {
+    sendMessageBtn.disabled = textarea.value.trim() === '';
+  });
+  //
+    function sendMessage(phone) {
+       const message = document.getElementById("message-textarea").value.trim();
+       const messageBody = message || 'Regular Checkup Remainder !!';
+      // Your Twilio credentials
+      const accountSid = 'AC324d02d7fd6c4bc6e1bb83e4a047d5f7';
+      const authToken = 'dcc5aa65106e78d842808ab3b0138d05';
+      const twilioPhoneNumber = 'whatsapp:+14155238886';
+
+  
+      // Use Twilio's API to send the message
+      fetch('https://api.twilio.com/2010-04-01/Accounts/' + accountSid + '/Messages.json', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Basic ' + btoa(accountSid + ':' + authToken),
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+          'From': twilioPhoneNumber,
+          'To': 'whatsapp:+919994871374',
+          'Body': messageBody,
+          
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.sid) {
+          alert('Message sent successfully!');
+        } else {
+          alert('Failed to send message.');
+        }
+      })
+      .catch(error => {
+        console.error('Error sending message:', error);
+        alert('Error sending message.');
       });
     }
 
