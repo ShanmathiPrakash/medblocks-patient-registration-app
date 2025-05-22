@@ -97,12 +97,8 @@
   max-width: 400px; /* Adjust as needed */
   padding: 10px;
   margin-top: 5px;
-<<<<<<< HEAD
   margin-left:55rem;
-=======
-  margin-left:50rem;
->>>>>>> 8c9ebfa (SMS feature is added successfully, using the twilio third party messaging tool)
-  border: 1px solid #ccc;
+ border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 16px;
   box-sizing: border-box; /* Ensures padding doesn't affect width */
@@ -113,11 +109,7 @@
 <body>
   <h1>Registered Patients</h1>
 
-<<<<<<< HEAD
-  <input type="text" id="search-input" placeholder="Search ......" onkeyup="filterTable()">
-=======
   <input type="text" id="search-input" placeholder="Search by name..." onkeyup="filterTable()">
->>>>>>> 8c9ebfa (SMS feature is added successfully, using the twilio third party messaging tool)
 
   <table>
     <thead>
@@ -125,12 +117,8 @@
         <th>Name</th>
         <th>Phone</th>
         <th>Action</th>
-<<<<<<< HEAD
         <th>WhatsApp Remainder</th>
-=======
-        <th>Message</th>
->>>>>>> 8c9ebfa (SMS feature is added successfully, using the twilio third party messaging tool)
-      </tr>
+     </tr>
     </thead>
     <tbody id="patient-list"></tbody>
   </table>
@@ -176,7 +164,7 @@ window.filterTable=function() {
       const nameText = nameCell.textContent || nameCell.innerText;
         const phoneText = phoneCell.textContent || phoneCell.innerText;
       const combinedText = nameText + ' ' + phoneText;
-<<<<<<< HEAD
+
 
       // for normalizing the phone numer format
 
@@ -189,20 +177,7 @@ window.filterTable=function() {
       rows[i].style.display = 'none';
       } 
 //
-
-=======
-      // for normalizing the phone numer format
-      const normalizedPhone = phoneText.replace(/\D/g, '');
-const normalizedFilter = filter.replace(/\D/g, '');
-if (nameText.toUpperCase().indexOf(filter) > -1 || normalizedPhone.indexOf(normalizedFilter) > -1) {
-  rows[i].style.display = '';
-} else {
-  rows[i].style.display = 'none';
-}
-//
-     rows[i].style.display = nameText.toUpperCase().indexOf(filter) > -1 ? '' : 'none';
->>>>>>> 8c9ebfa (SMS feature is added successfully, using the twilio third party messaging tool)
-        
+ 
     }
   }
 }

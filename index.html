@@ -2,11 +2,29 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Welcome to Our Healthcare Portal</title>
+  <link rel="stylesheet" href="../src/css/styles.css">
+
 </head>
 <body>
-  <h1>Welcome to Our Healthcare Portal</h1>
-  <p><a href="../src/components/RegistrationForm.html">Go to Patient Registration</a></p>
-  <script src="../src/scripts/main.js"></script>  
+
+  <div id="common-layout"></div>
+<div class="container">
+    <aside class="sidebar">
+      <!-- Sidebar content here -->
+    </aside>
+    <main class="main-content">
+      <h2>Welcome to Our Healthcare Portal !</h2>
+      <!-- Page-specific content here -->
+    </main>
+  </div>
+
+  <script>
+    // Load common layout (header + sidebar)
+    fetch('../src/components/layout.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('common-layout').innerHTML = data;
+      });
+  </script>
 </body>
 </html>
