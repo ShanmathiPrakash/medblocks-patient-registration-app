@@ -41,9 +41,18 @@
       <p><strong>Address:</strong> <span id="modal-address"></span></p>
       <p><strong>Date of Birth:</strong> <span id="modal-dob"></span></p>
       <p><strong>Gender:</strong> <span id="modal-gender"></span></p>
-    <textarea id="message-textarea" placeholder="Type your message here..." rows="4" cols="50"></textarea>
-<button class="send-message-btn" id="send-message" disabled>Send WhatsApp Message</button>
+        <p><strong>Disease:</strong> <span id="modal-disease"></span></p>
+     
 
+    <p><strong>Message:</strong></p>
+    <textarea id="message-textarea" placeholder="Type your message here..." rows="4" cols="50"></textarea>
+<button class="send-message-btn" id="send-message" disabled style="margin-left: 370px;">Send WhatsApp Message</button>
+
+ <p><strong>Documents:</strong></p>
+        <div id="modal-report-container">
+          <img id="modal-report-img" style="max-width:100%; display:none;" />
+          <iframe id="modal-report-pdf" style="width:100%; height:300px;  display:none;" frameborder="0"></iframe>
+        </div>
     </div>
   </div>
 </main>
@@ -134,12 +143,36 @@ window.filterTable=function() {
     }
 
     function openModal(patient) {
+      console.log("patir:"+patient.report);
       document.getElementById("modal-name").textContent = `${patient.first_name} ${patient.last_name}`;
       document.getElementById("modal-phone").textContent = patient.phone || "N/A";
       document.getElementById("modal-email").textContent = patient.email || "N/A";
       document.getElementById("modal-address").textContent = patient.address || "N/A";
       document.getElementById("modal-dob").textContent = patient.date_of_birth || "N/A";
       document.getElementById("modal-gender").textContent = patient.gender || "N/A";
+      document.getElementById("modal-disease").textContent = patient.disease || "N/A";
+
+   const reportImg = document.getElementById("modal-report-img");
+        const reportPdf = document.getElementById("modal-report-pdf");
+
+        if (patient.report && patient.report.startsWith("data:")) {
+          if (patient.report.startsWith("data:image/")) {
+            reportImg.src = patient.report;
+            reportImg.style.display = "block";
+            reportPdf.style.display = "none";
+          } else if (patient.report.startsWith("data:application/pdf")) {
+            reportPdf.src = patient.report;
+            reportPdf.style.display = "block";
+            reportImg.style.display = "none";
+          } else {
+            reportImg.style.display = "none";
+            reportPdf.style.display = "none";
+          }
+        } else {
+          reportImg.style.display = "none";
+          reportPdf.style.display = "none";
+        }
+
 
       const sendMessageBtn = document.getElementById("send-message");
       sendMessageBtn.onclick = () => sendMessage(patient.phone);
