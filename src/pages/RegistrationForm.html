@@ -1,128 +1,128 @@
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Patient Registration</title>
-  <link rel="stylesheet" href="../css/styles.css">
-</head>
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Patient Registration</title>
+    <link rel="stylesheet" href="../css/styles.css">
+  </head>
 
-<body>
+  <body>
 
-   <div id="common-layout"></div>
-  <div class="container">
-    <aside class="sidebar">
-      <!-- Sidebar content here -->
-    </aside>
-    <main class="main-content">
+    <div id="common-layout"></div>
+    <div class="container">
+      <aside class="sidebar">
+        <!-- Sidebar content here -->
+      </aside>
+      <main class="main-content">
 
-  <h1>Patient Registration</h1>
+    <h1>Patient Registration</h1>
 
-  <form id="registration-form">
-    <input type="text" id="first-name" placeholder="First Name" required />
-    <input type="text" id="last-name" placeholder="Last Name" required />
-    <input type="text" id="disease" placeholder="Disease" required />
-    <input type="date" id="dob" placeholder="Date of Birth" required />
-    <input type="text" id="gender" placeholder="Gender" required />
-    <input type="email" id="email" placeholder="Email" />
-    <input type="tel" id="phone" placeholder="Phone" />
-    <textarea id="address" placeholder="Address"></textarea>
-     <!-- report upload field -->
-     <input type="file" id="report" accept="report/*" />
-     <iframe id="report-preview" style="display:none; width:100%; height:300px;"></iframe>
+    <form id="registration-form">
+      <input type="text" id="first-name" placeholder="First Name" required />
+      <input type="text" id="last-name" placeholder="Last Name" required />
+      <input type="text" id="disease" placeholder="Disease" required />
+      <input type="date" id="dob" placeholder="Date of Birth" required />
+      <input type="text" id="gender" placeholder="Gender" required />
+      <input type="email" id="email" placeholder="Email" />
+      <input type="tel" id="phone" placeholder="Phone" />
+      <textarea id="address" placeholder="Address"></textarea>
+      <!-- report upload field -->
+      <input type="file" id="report" accept="report/*" />
+      <iframe id="report-preview" style="display:none; width:100%; height:300px;"></iframe>
 
-    <button type="submit">Register</button>
-  </form>
-  </main>
-  </div>
+      <button type="submit">Register</button>
+    </form>
+    </main>
+    </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@electric-sql/pglite/dist/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@electric-sql/pglite/dist/index.js"></script>
 
-  <script type="module">
+    <script type="module">
 
-    // Load common layout (header + sidebar)
-    fetch('../components/layout.html')
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById('common-layout').innerHTML = data;
+      // Load common layout (header + sidebar)
+      fetch('../components/layout.html')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('common-layout').innerHTML = data;
+        });
+
+    import { db, initDatabase } from "../db/dbInit.js";
+    await initDatabase();
+
+      async function addPatient(patient) {
+        await db.query(
+          `INSERT INTO patients (first_name, last_name,disease, date_of_birth, gender, email, phone, address,report)
+          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+          [
+            patient.first_name,
+            patient.last_name,
+            patient.disease,
+            patient.date_of_birth,
+            patient.gender,
+            patient.email,
+            patient.phone,
+            patient.address,
+            patient.report,
+          
+          ]
+        );
+      }
+
+
+      // Handle report preview
+      document.getElementById("report").addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const preview = document.getElementById("report-preview");
+        preview.src = reader.result;
+        preview.style.display = "block";
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  let reportBase64 = "";
+
+      document.getElementById("report").addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        reportBase64 = reader.result; // Save the base64 string
+        const preview = document.getElementById("report-preview");
+        preview.src = reportBase64;
+        preview.style.display = "block";
+      };
+      reader.readAsDataURL(file); // Generates base64
+    }
+  });
+
+
+      document.getElementById("registration-form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const patient = {
+          first_name: document.getElementById("first-name").value,
+          last_name: document.getElementById("last-name").value,
+          disease: document.getElementById("disease").value,
+          date_of_birth: document.getElementById("dob").value,
+          gender: document.getElementById("gender").value,
+          email: document.getElementById("email").value,
+          phone: document.getElementById("phone").value,
+          address: document.getElementById("address").value,
+        report: reportBase64,
+
+        };
+
+        await addPatient(patient);
+        alert("Patient registered successfully!");
+        window.location.href = "RegisteredPatientList.html"; // Redirect to the list page
       });
 
-  import { db, initDatabase } from "../db/dbInit.js";
-  await initDatabase();
-
-    async function addPatient(patient) {
-      await db.query(
-        `INSERT INTO patients (first_name, last_name,disease, date_of_birth, gender, email, phone, address,report)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
-        [
-          patient.first_name,
-          patient.last_name,
-           patient.disease,
-          patient.date_of_birth,
-          patient.gender,
-          patient.email,
-          patient.phone,
-          patient.address,
-          patient.report,
-         
-        ]
-      );
-    }
-
-
-    // Handle report preview
-    document.getElementById("report").addEventListener("change", (e) => {
-  const file = e.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const preview = document.getElementById("report-preview");
-      preview.src = reader.result;
-      preview.style.display = "block";
-    };
-    reader.readAsDataURL(file);
-  }
-});
-
-let reportBase64 = "";
-
-     document.getElementById("report").addEventListener("change", (e) => {
-  const file = e.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      reportBase64 = reader.result; // Save the base64 string
-      const preview = document.getElementById("report-preview");
-      preview.src = reportBase64;
-      preview.style.display = "block";
-    };
-    reader.readAsDataURL(file); // Generates base64
-  }
-});
-
-
-    document.getElementById("registration-form").addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      const patient = {
-        first_name: document.getElementById("first-name").value,
-        last_name: document.getElementById("last-name").value,
-         disease: document.getElementById("disease").value,
-        date_of_birth: document.getElementById("dob").value,
-        gender: document.getElementById("gender").value,
-        email: document.getElementById("email").value,
-        phone: document.getElementById("phone").value,
-        address: document.getElementById("address").value,
-       report: reportBase64,
-
-      };
-
-      await addPatient(patient);
-      alert("Patient registered successfully!");
-      window.location.href = "RegisteredPatientList.html"; // Redirect to the list page
-    });
-
-    initDatabase();
-  </script>
-</body>
-</html>
+      initDatabase();
+    </script>
+  </body>
+  </html>

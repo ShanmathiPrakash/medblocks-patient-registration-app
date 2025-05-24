@@ -124,8 +124,101 @@ body {
    flex-grow: 1;
   
 }
+.custom-header {
+  background: linear-gradient(to right, #f7f8f8, #e8fcfb);
+  color: white;
+  padding: 10px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
 
+/* Left Section: Logo + Title */
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.header-left h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+/* Optional Right Section: User Icon */
+.header-right i {
+  font-size: 3rem;
+  margin-right: 70px;
+}
+/* Profile Container */
+.profile-container {
+   margin-right: 70px;
+  position: relative;
+  display: inline-block;
+}
+
+/* Profile Image */
+.profile-img {
+ 
+  height: 45px;
+  width: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+/* Optional hover effect on image */
+.profile-img:hover {
+  transform: scale(1.05);
+}
+
+/* Info on Hover */
+.profile-info {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  background-color: white;
+  color: #333;
+  padding: 10px 12px;
+  border-radius: 5px;
+  box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+  display: none;
+  width: max-content;
+  white-space: nowrap;
+  z-index: 1001;
+}
+
+/* Show the info on hover */
+.profile-container:hover .profile-info {
+  display: block;
+}
+
+/* Profile Text Styling */
+.profile-info .name {
+  font-weight: bold;
+  margin: 0;
+}
+
+.profile-info .designation {
+  font-size: 0.85rem;
+  margin: 2px 0 0;
+}
+
+/* logo */
+/* Logo Image - no circle, clean display */
+.logo {
+  height: 40px;
+  width: auto;
+  margin-right: 12px;
+  vertical-align: middle;
+}
  */
+
 
 /*2. Registration form: */
    
@@ -379,3 +472,48 @@ pre {
 #sql-form button:hover { 
   background-color: #0056b3; 
 }
+.container {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+}
+
+.sidebar {
+  grid-column: 1;
+}
+
+.main-content {
+  grid-column: 2;
+}
+
+
+.sql-modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+}
+
+.sql-modal-content {
+  background-color: white;
+  margin: 15% auto;
+  padding: 20px;
+  border-radius: 8px;
+  width: 50%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: left;
+  white-space: pre-wrap;
+}
+
+.sql-close-button {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+

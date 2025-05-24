@@ -1,96 +1,104 @@
   <!DOCTYPE html>
-  <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <title>SQL Query Executor</title>
-    <link rel="stylesheet" href="../css/styles.css">
-  
-  </head>
-  <body>
-    <div id="common-layout"></div>
-    <div class="container">
-        <aside class="sidebar">
-          <!-- Sidebar content here -->
-        </aside>
-        <main class="main-content">
-        
-    <h1>SQL Query Executor</h1>
-    <form id="sql-form">
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SQL Query Executor</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <div id="common-layout"></div>
+
+  <div class="container">
+    <aside class="sidebar">
+      <!-- Sidebar content here -->
+    </aside>
+    <!-- Custom Modal -->
+<div id="popup-modal" class="sql-modal">
+  <div class="sql-modal-content">
+    <span class="sql-close-button">&times;</span>
+    <pre id="popup-text"></pre>
+  </div>
+</div>
+    <main class="main-content">
+      <h1>SQL Query Executor</h1>
+      <form id="sql-form">
+        <textarea id="sql-query" name="sql-query" rows="6" placeholder="Write your SQL query here..."></textarea><br>
+        <button type="submit" margin-left:100px>Submit</button>
+      </form>
+<div class="reference-section">
+  <button id="toggle-reference-btn">📘 Show Reference Queries</button>
+  <div id="reference-queries" style="display: none; margin-top: 10px;">
+    <pre>
+-- Sample Queries --
+SELECT * FROM patients;
+SELECT name, age FROM patients WHERE age > 30;
+INSERT INTO patients (name, age) VALUES ('Alice', 29);
+UPDATE patients SET age = 35 WHERE name = 'Alice';
+DELETE FROM patients WHERE name = 'Alice';
+    </pre>
+  </div>
+</div>
+
       
-      <textarea id="sql-query" name="sql-query" rows="6" placeholder="Write your SQL query here..."></textarea><br>
-      <button type="submit">Submit</button>
-    </form>
+    </main>
+  </div>
 
-    <h2>Query Result:</h2>
-    <pre id="result"></pre>
-  </main>
-      </div>
+    <script type="module">
+  import { PGlite } from "https://cdn.jsdelivr.net/npm/@electric-sql/pglite/dist/index.js";
 
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.6.1/sql-wasm.js"></script>
-    <script>
-      fetch('../components/layout.html')
-        .then(response => response.text())
-        .then(data => {
-          document.getElementById('common-layout').innerHTML = data;
-        });
-
-      let db;
+  const db = new PGlite("idb://patient-db");
   
-      // Initialize the database
-      async function initDatabase() {
-        const SQL = await initSqlJs({ locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.6.1/${file}` });
-        db = new SQL.Database();
-        db.run(`
-          CREATE TABLE IF NOT EXISTS patients (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            first_name TEXT NOT NULL,
-            last_name TEXT NOT NULL,
-            date_of_birth DATE NOT NULL,
-            gender TEXT NOT NULL,
-            email TEXT,
-            phone TEXT,
-            address TEXT,
-            image TEXT,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-          );
-        `);
-      
-  // Try adding the disease column
-    try {
-      db.run(`ALTER TABLE patients ADD COLUMN disease TEXT;`);
-    } catch (err) {
-      if (!/duplicate column|already exists/i.test(err.message)) {
-        console.error("Unexpected error while adding 'disease' column:", err);
-      }
-      // Ignore if column already exists
-    }
-  }
-      // Execute the SQL query
-      async function executeQuery(query) {
-        try {
-          const result = db.exec(query);
+    window.addEventListener("DOMContentLoaded", async () => {
+  // Load layout first
+  await fetch('../components/layout.html')
+    .then(response => response.text())
+    .then(html => {
+      document.getElementById('common-layout').innerHTML = html;
+    });
 
-          if (result.length === 0) {
-        document.getElementById('result').textContent = '✅ Query executed successfully.';
+document.getElementById("toggle-reference-btn").addEventListener("click", () => {
+  const refSection = document.getElementById("reference-queries");
+  const isVisible = refSection.style.display === "block";
+  refSection.style.display = isVisible ? "none" : "block";
+});
+
+
+    // Attach event after DOM is available
+    const form = document.getElementById("sql-form");
+   form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const query = document.getElementById("sql-query").value;
+          try {
+        const result = await db.query(query);
+        const modal = document.getElementById("popup-modal");
+        const popupText = document.getElementById("popup-text");if (result.rows.length === 0) {
+        popupText.textContent = "✅ Successfully Done!";
       } else {
-        document.getElementById('result').textContent = JSON.stringify(result, null, 2);
-      }
-    }
-        catch (error) {
-          document.getElementById('result').textContent = `Error: ${error.message}`;
-        }
+        popupText.textContent = JSON.stringify(result.rows, null, 2);
       }
 
-      // Handle form submission
-      document.getElementById('sql-form').addEventListener('submit', (e) => {
-        e.preventDefault();
-        const query = document.getElementById('sql-query').value;
-        executeQuery(query);
-      });
+  modal.style.display = "block";
+} catch (error) {
+  const modal = document.getElementById("popup-modal");
+  const popupText = document.getElementById("popup-text");
+  popupText.textContent = "Query Error:\n" + error.message;
+  modal.style.display = "block";
+}
 
-      // Initialize the database on page load
-      window.onload = initDatabase;
-    </script>
+// Close button functionality
+document.querySelector(".sql-close-button").onclick = function () {
+  document.getElementById("popup-modal").style.display = "none";
+};
+
+// Hide modal on outside click
+window.onclick = function (event) {
+  const modal = document.getElementById("popup-modal");
+  if (event.target === modal) {
+    modal.style.display = "none";
+  }
+};
+    });
+  });
+</script>
   </body>
   </html>
