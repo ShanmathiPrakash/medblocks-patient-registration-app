@@ -4,21 +4,51 @@
   <head>
     <meta charset="UTF-8">
     <title>Patient Registration</title>
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../../assets/css/styles.css">
   </head>
 
   <body>
-
-    <div id="common-layout"></div>
-    <div class="container">
-      <aside class="sidebar">
-        <!-- Sidebar content here -->
-      </aside>
+  <div id="common-header"></div>
       <main class="main-content">
 
     <h1>Patient Registration</h1>
 
-    <form id="registration-form">
+ <div class="option-container">
+    <div class="option-card" data-type="Emergency">🚨 Emergency</div>
+    <div class="option-card" data-type="Urgent">⚠️ Urgent</div>
+    <div class="option-card" data-type="General Checkup">🩺 General Checkup</div>
+    <div class="option-card" data-type="Consultation">👨‍⚕️ Consultation</div>
+  </div>
+<!-- Hidden initially -->
+<main class="main-content" id="registration-section" >
+  <h1 id="form-title">Patient Registration</h1>
+
+  <form id="registration-form">
+    <input type="text" id="first-name" placeholder="First Name" required />
+    <input type="text" id="last-name" placeholder="Last Name" required />
+    <input type="text" id="disease" placeholder="Disease" required />
+    <input type="date" id="dob" placeholder="Date of Birth" required />
+    <input type="number" id="age" placeholder="Age" min="0" max="150" required />
+    <input type="text" id="gender" placeholder="Gender" required />
+    <input type="email" id="email" placeholder="Email" />
+    <input type="tel" id="phone" placeholder="Phone" />
+    <textarea id="address" placeholder="Address"></textarea>
+    <input type="file" id="report" accept="report/*" />
+    <iframe id="report-preview" style="display:none; width:100%; height:300px;"></iframe>
+
+    <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+     <button type="button" id="back-button" style="padding: 5px 5px; background-color: #868686; border: none; border-radius: 5px; cursor: pointer; width:80px;height:40px;">
+      ⬅ Back
+    </button>
+    <button type="submit" style="padding: 5px 5px; background-color: #674b94; color: white; border: none; border-radius: 5px; cursor: pointer; width:100px;height:40px;">
+      ✅ Register
+    </button>
+  </div>
+ 
+  </form>
+</main>
+
+    <!-- <form id="registration-form">
       <input type="text" id="first-name" placeholder="First Name" required />
       <input type="text" id="last-name" placeholder="Last Name" required />
       <input type="text" id="disease" placeholder="Disease" required />
@@ -27,25 +57,25 @@
       <input type="email" id="email" placeholder="Email" />
       <input type="tel" id="phone" placeholder="Phone" />
       <textarea id="address" placeholder="Address"></textarea>
-      <!-- report upload field -->
+     
       <input type="file" id="report" accept="report/*" />
       <iframe id="report-preview" style="display:none; width:100%; height:300px;"></iframe>
 
       <button type="submit">Register</button>
     </form>
-    </main>
+    </main> -->
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@electric-sql/pglite/dist/index.js"></script>
 
     <script type="module">
 
-      // Load common layout (header + sidebar)
-      fetch('../components/layout.html')
-        .then(response => response.text())
-        .then(data => {
-          document.getElementById('common-layout').innerHTML = data;
-        });
+      fetch('../components/header.html') // Adjust path if needed
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById('common-header').innerHTML = data;
+    });
+
 
     import { db, initDatabase } from "../db/dbInit.js";
     await initDatabase();
@@ -69,7 +99,24 @@
         );
       }
 
+ // Show form on card click
+    document.querySelectorAll('.option-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const type = card.getAttribute('data-type');
+        const section = document.getElementById('registration-section');
+        document.getElementById('form-title').textContent = `${type} Registration`;
+        section.style.display = 'block';
+        section.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
 
+document.getElementById("back-button").addEventListener("click", () => {
+  const section = document.getElementById("registration-section");
+  section.style.display = "none"; // Hide the form
+
+  // Optionally scroll back to the top or card selection area
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
       // Handle report preview
       document.getElementById("report").addEventListener("change", (e) => {
     const file = e.target.files[0];
@@ -99,7 +146,15 @@
       reader.readAsDataURL(file); // Generates base64
     }
   });
-
+// Toggle form visibility and update title based on button clicked
+document.querySelectorAll(".option-btn").forEach(button => {
+  button.addEventListener("click", () => {
+    const type = button.dataset.type;
+    document.getElementById("form-title").textContent = `${type} Registration`;
+    document.getElementById("registration-section").style.display = "block";
+    window.scrollTo({ top: document.getElementById("registration-section").offsetTop, behavior: "smooth" });
+  });
+});
 
       document.getElementById("registration-form").addEventListener("submit", async (e) => {
         e.preventDefault();
