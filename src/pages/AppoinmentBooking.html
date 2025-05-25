@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Appointment Booking</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #74ebd5, #9face6);
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #fff;
+      margin-bottom: 30px;
+    }
+
+    .department-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .department-card {
+      background: linear-gradient(to top right, #fbc2eb, #a6c1ee);
+      border-radius: 15px;
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+      width: 220px;
+      text-align: center;
+      padding: 15px;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    .department-card:hover {
+      transform: scale(1.05);
+    }
+
+    .department-card img {
+      width: 100%;
+      height: 130px;
+      border-radius: 12px;
+      object-fit: cover;
+      margin-bottom: 10px;
+    }
+
+    .specialist-section {
+      margin-top: 40px;
+      display: none;
+    }
+
+    .specialist-section h2 {
+      text-align: center;
+      color: white;
+    }
+
+    .doctor-card {
+      background: white;
+      border-radius: 12px;
+      padding: 15px;
+      margin: 10px auto;
+      width: 80%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .doctor-info {
+      display: flex;
+      align-items: center;
+    }
+
+    .doctor-info img {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 15px;
+    }
+
+    .doctor-info h3 {
+      margin: 0;
+      color: #444;
+    }
+
+    .doctor-card button, .general-booking-btn {
+      background: linear-gradient(to right, #667eea, #764ba2);
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .doctor-card button:hover, .general-booking-btn:hover {
+      background: linear-gradient(to right, #4b6cb7, #182848);
+    }
+
+    .general-booking-btn {
+      display: block;
+      margin: 30px auto 0;
+    }
+
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 100;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 400px;
+      position: relative;
+      animation: popIn 0.3s ease-out;
+    }
+
+    @keyframes popIn {
+      from {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .modal-content h3 {
+      margin-top: 0;
+      color: #333;
+    }
+
+    .modal-content input, .modal-content select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      margin-bottom: 15px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    .modal-content button {
+      width: 100%;
+      background: #28a745;
+      color: white;
+      padding: 12px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      font-size: 20px;
+      cursor: pointer;
+      color: #aaa;
+    }
+
+    .close-btn:hover {
+      color: #000;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Book an Appointment</h1>
+
+  <div class="department-grid">
+    <div class="department-card" onclick="showSpecialists('General Checkup')">
+      <img src="../../assets/images/gendralCheckUp.png" />
+      <h3>General Checkup</h3>
+    </div>
+    <div class="department-card" onclick="showSpecialists('Cardiology')">
+      <img src="https://via.placeholder.com/200x130?text=Cardiology" />
+      <h3>Heart Specialist</h3>
+    </div>
+    <div class="department-card" onclick="showSpecialists('Neurology')">
+      <img src="https://via.placeholder.com/200x130?text=Neurology" />
+      <h3>Neurology</h3>
+    </div>
+    <div class="department-card" onclick="showSpecialists('General Surgery')">
+      <img src="https://via.placeholder.com/200x130?text=Surgery" />
+      <h3>General Surgery</h3>
+    </div>
+    <div class="department-card" onclick="showSpecialists('Dermatology')">
+      <img src="https://via.placeholder.com/200x130?text=Dermatology" />
+      <h3>Dermatology</h3>
+    </div>
+    <div class="department-card" onclick="showSpecialists('Eye Specialist')">
+      <img src="https://via.placeholder.com/200x130?text=Eye" />
+      <h3>Eye Specialist</h3>
+    </div>
+    <div class="department-card" onclick="showSpecialists('Baby Specialist')">
+      <img src="https://via.placeholder.com/200x130?text=Eye" />
+      <h3>Baby Specialist</h3>
+    </div>
+  </div>
+
+  <button class="general-booking-btn" onclick="openModal('General Booking')">📝 General Booking</button>
+
+  <div class="specialist-section" id="specialist-section">
+    <h2 id="dept-title"></h2>
+    <div id="doctor-list"></div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal" id="appointment-modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal()">&times;</span>
+      <h3 id="modal-doctor-name">Book Appointment</h3>
+      <select id="slot">
+        <option value="9 AM - 10 AM">9 AM - 10 AM</option>
+        <option value="10 AM - 11 AM">10 AM - 11 AM</option>
+        <option value="11 AM - 12 PM">11 AM - 12 PM</option>
+        <option value="2 PM - 3 PM">2 PM - 3 PM</option>
+      </select>
+      <input type="tel" id="mobile" placeholder="Enter mobile number" />
+      <button onclick="bookAppointment()">Confirm Booking</button>
+    </div>
+  </div>
+
+  <script>
+    const specialists = {
+      "General Checkup": [
+        { name: "Dr. Alex", image: "https://via.placeholder.com/100?text=Alex" },
+        { name: "Dr. Bella", image: "https://via.placeholder.com/100?text=Bella" }
+      ],
+      "Cardiology": [
+        { name: "Dr. Heartman", image: "https://via.placeholder.com/100?text=Heartman" },
+        { name: "Dr. Valve", image: "https://via.placeholder.com/100?text=Valve" }
+      ],
+      "Neurology": [
+        { name: "Dr. Neuro", image: "https://via.placeholder.com/100?text=Neuro" },
+        { name: "Dr. Brain", image: "https://via.placeholder.com/100?text=Brain" }
+      ],
+      "General Surgery": [
+        { name: "Dr. Scalpel", image: "https://via.placeholder.com/100?text=Scalpel" },
+        { name: "Dr. Stitch", image: "https://via.placeholder.com/100?text=Stitch" }
+      ],
+      "Dermatology": [
+        { name: "Dr. Abinav Ram", image: "https://via.placeholder.com/100?text=Skinner" },
+        { name: "Dr.Dhina",age: "https://via.placeholder.com/100?text=Glow" }
+      ],
+      "Eye Specialist": [
+        { name: "Dr. Vision", image: "https://via.placeholder.com/100?text=Vision" },
+        { name: "Dr. Iris", image: "https://via.placeholder.com/100?text=Iris" }
+      ],
+       "Baby Specialist": [
+        { name: "Dr. Diya Ram", image: "https://via.placeholder.com/100?text=Vision" },
+        { name: "Dr. Dev Rani", image: "https://via.placeholder.com/100?text=Iris" }
+      ]
+    };
+
+    let selectedDoctor = "";
+
+    function showSpecialists(dept) {
+      document.getElementById("specialist-section").style.display = "block";
+      document.getElementById("dept-title").textContent = dept;
+      const container = document.getElementById("doctor-list");
+      container.innerHTML = "";
+
+      specialists[dept].forEach(doc => {
+        const card = document.createElement("div");
+        card.className = "doctor-card";
+        card.innerHTML = `
+          <div class="doctor-info">
+            <img src="${doc.image}" alt="${doc.name}" />
+            <h3>${doc.name}</h3>
+          </div>
+          <button onclick="openModal('${doc.name}')">Book Appointment</button>
+        `;
+        container.appendChild(card);
+      });
+       document.getElementById("specialist-section").scrollIntoView({ behavior: "smooth" });
+
+    }
+
+    function openModal(doctorName) {
+      selectedDoctor = doctorName;
+      document.getElementById("modal-doctor-name").textContent = `Booking for: ${doctorName}`;
+      document.getElementById("appointment-modal").style.display = "flex";
+    }
+
+    function closeModal() {
+      document.getElementById("appointment-modal").style.display = "none";
+    }
+
+    function bookAppointment() {
+      const slot = document.getElementById("slot").value;
+      const mobile = document.getElementById("mobile").value;
+      if (!mobile) {
+        alert("Please enter a valid mobile number.");
+        return;
+      }
+      alert(`Appointment booked with ${selectedDoctor} at ${slot}\nMobile: ${mobile}`);
+      closeModal();
+    }
+  </script>
+</body>
+</html>
