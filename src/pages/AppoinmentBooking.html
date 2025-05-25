@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Appointment Booking</title>
+  <link rel="stylesheet" href="../../assets/css/styles.css" />
   <style>
     body {
       margin: 0;
@@ -318,9 +319,8 @@
     }
 
     // Your Twilio credentials (replace with your actual credentials)
-    const accountSid = 'AC324d02d7fd6c4bc6e1bb83e4a047d5f7';
-    const authToken = '749d2f51051cd3d1243ebebba338cbbe';
-    const twilioPhoneNumber =  'whatsapp:+14155238886';
+  
+
  // Twilio sandbox WhatsApp number
 
     function bookAppointment() {
@@ -351,11 +351,18 @@
       .then(response => response.json())
       .then(data => {
         if (data.sid) {
-          alert(`Appointment booked successfully!`);
           closeModal();
-        } else {
-          alert('Failed to send message: ' + (data.message || 'Unknown error'));
-        }
+
+      // Show custom alert
+      document.getElementById("alert-message").textContent = "✅ Appointment booked successfully!";
+      const alertBox = document.getElementById("custom-alert");
+      alertBox.style.display = "flex";
+
+      document.getElementById("alert-ok-btn").onclick = () => {
+        alertBox.style.display = "none";
+        // Optional: Redirect or reset form
+      };
+    } 
       })
       .catch(error => {
         console.error('Error sending message:', error);
@@ -363,5 +370,11 @@
       });
     }
   </script>
+  <div id="custom-alert" class="custom-alert" style="display: none;">
+  <div class="alert-content">
+    <p id="alert-message">✅ Appointment booked successfully!</p>
+    <button id="alert-ok-btn">OK</button>
+  </div>
+</div>
 </body>
 </html>

@@ -64,26 +64,26 @@
          <strong>Specialization:</strong> <span id="modal-specialization"></span>
         </div>
         <div class="modal-field">
-      <p><strong>Experience:</strong> <span id="modal-experience"></span></p>
+      <strong>Experience:</strong> <span id="modal-experience"></span>
       </div>
        <div class="modal-field">
-        <p><strong>Surgeon:</strong> <span id="modal-surgeon"></span></p>
+        <strong>Surgeon:</strong> <span id="modal-surgeon"></span>
        </div>
       <div class="modal-field">
-         <p><strong>Reception Contact:</strong> <span id="modal-contact"></span></p>
+         <strong>Reception Contact:</strong> <span id="modal-contact"></span>
       </div>
       <div class="modal-field">
-         <p><strong>Ward No:</strong> <span id="modal-ward"></span></p>
+         <strong>Ward No:</strong> <span id="modal-ward"></span>
       </div>
       <div class="modal-field">
-        <p><strong>Qualification:</strong> <span id="modal-qualification"></span></p>
+        <strong>Qualification:</strong> <span id="modal-qualification"></span>
       </div>
       
       <div class="modal-field">
-        <p><strong>Availability:</strong> <span id="modal-availability"></span></p>
+        <strong>Availability:</strong> <span id="modal-availability"></span>
     </div>
       <div class="modal-field">
-        <p><strong>Email:</strong> <span id="modal-email"></span></p>
+        <strong>Email:</strong> <span id="modal-email"></span>
     </div>
       
       
@@ -235,25 +235,25 @@
     });
 
     // Send WhatsApp message
-    sendMsgBtn.addEventListener("click", () => {
-      const contact = sendMsgBtn.dataset.contact;
-      const message = encodeURIComponent(messageTextarea.value.trim());
-      if (!contact) {
-        alert("Reception contact number is missing.");
-        return;
-      }
-      if (!message) {
-        alert("Please type a message before sending.");
-        return;
-      }
-      // WhatsApp URL format: https://wa.me/<number>?text=<encoded message>
-      // Number must be in international format without plus or spaces, e.g. 14155552671
-      const cleanNumber = contact.replace(/\D/g, '');
-      const url = `https://wa.me/${cleanNumber}?text=${message}`;
-      window.open(url, "_blank");
-    });
+        sendMsgBtn.addEventListener("click", () => {
+  const contact = sendMsgBtn.dataset.contact;
+  const message = encodeURIComponent(messageTextarea.value.trim());
+
+  // Show custom alert
+  document.getElementById("custom-alert").style.display = "flex";
+   });
+document.getElementById("alert-ok-btn").addEventListener("click", () => {
+  document.getElementById("custom-alert").style.display = "none";
+  closeModal(); // Use your existing modal close function
+});
 
     init();
   </script>
+  <div id="custom-alert" class="custom-alert">
+  <div class="alert-content">
+    <p id="alert-message">✅ Message sent successfully!</p>
+    <button id="alert-ok-btn">OK</button>
+  </div>
+</div>
 </body>
 </html>
