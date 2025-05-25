@@ -1,183 +1,193 @@
 
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <title>Patient Registration</title>
-    <link rel="stylesheet" href="../../assets/css/styles.css">
-  </head>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <title>Patient Registration</title>
+      <link rel="stylesheet" href="../../assets/css/styles.css">
+    </head>
 
-  <body>
-  <div id="common-header"></div>
-      <main class="main-content">
+    <body>
+    <div id="common-header"></div>
+        <main class="main-content">
 
-    <h1>Patient Registration</h1>
+      <h1>Patient Registration</h1>
 
- <div class="option-container">
-    <div class="option-card" data-type="Emergency">🚨 Emergency</div>
-    <div class="option-card" data-type="Urgent">⚠️ Urgent</div>
-    <div class="option-card" data-type="General Checkup">🩺 General Checkup</div>
-    <div class="option-card" data-type="Consultation">👨‍⚕️ Consultation</div>
-  </div>
-<!-- Hidden initially -->
-<main class="main-content" id="registration-section" >
-  <h1 id="form-title">Patient Registration</h1>
+  <div class="option-container">
+        <div class="option-card" data-type="Urgent">
+      <span class="card-title">🚨 Urgent</span>
+      <div class="card-icon"></div>
+      <button class="card-action">Click</button>
+       </div>
+ <div class="option-card" data-type="General Checkup">
+      <span class="card-title">🩺 General Checkup</span>
+      <div class="card-icon"></div>
+      <button class="card-action">Click</button>
+       </div>
+        <div class="option-card" data-type="Consultation">
+      <span class="card-title">👨‍⚕️ Consultation</span>
+      <div class="card-icon"></div>
+      <button class="card-action">Click</button>
+    </div>
+  <!-- Hidden initially -->
+  <main class="main-content" id="registration-section" >
+    <h1 id="form-title">Patient Registration</h1>
 
-  <form id="registration-form">
-    <input type="text" id="first-name" placeholder="First Name" required />
-    <input type="text" id="last-name" placeholder="Last Name" required />
-    <input type="text" id="disease" placeholder="Disease" required />
-    <input type="date" id="dob" placeholder="Date of Birth" required />
-    <input type="number" id="age" placeholder="Age" min="0" max="150" required />
-    <input type="text" id="gender" placeholder="Gender" required />
-    <input type="email" id="email" placeholder="Email" />
-    <input type="tel" id="phone" placeholder="Phone" />
-    <textarea id="address" placeholder="Address"></textarea>
-    <input type="file" id="report" accept="report/*" />
-    <iframe id="report-preview" style="display:none; width:100%; height:300px;"></iframe>
-
-    <div style="display: flex; justify-content: space-between; margin-top: 20px;">
-     <button type="button" id="back-button" style="padding: 5px 5px; background-color: #868686; border: none; border-radius: 5px; cursor: pointer; width:80px;height:40px;">
-      ⬅ Back
-    </button>
-    <button type="submit" style="padding: 5px 5px; background-color: #674b94; color: white; border: none; border-radius: 5px; cursor: pointer; width:100px;height:40px;">
-      ✅ Register
-    </button>
-  </div>
- 
-  </form>
-</main>
-
-    <!-- <form id="registration-form">
+    <form id="registration-form">
       <input type="text" id="first-name" placeholder="First Name" required />
       <input type="text" id="last-name" placeholder="Last Name" required />
       <input type="text" id="disease" placeholder="Disease" required />
       <input type="date" id="dob" placeholder="Date of Birth" required />
+      <input type="number" id="age" placeholder="Age" min="0" max="150" required />
       <input type="text" id="gender" placeholder="Gender" required />
       <input type="email" id="email" placeholder="Email" />
       <input type="tel" id="phone" placeholder="Phone" />
       <textarea id="address" placeholder="Address"></textarea>
-     
       <input type="file" id="report" accept="report/*" />
       <iframe id="report-preview" style="display:none; width:100%; height:300px;"></iframe>
 
-      <button type="submit">Register</button>
-    </form>
-    </main> -->
+      <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+      <button type="button" id="back-button" style="padding: 5px 5px; background-color: #868686; border: none; border-radius: 5px; cursor: pointer; width:80px;height:40px;">
+        ⬅ Back
+      </button>
+      <button type="submit" style="padding: 5px 5px; background-color: #674b94; color: white; border: none; border-radius: 5px; cursor: pointer; width:100px;height:40px;">
+        ✅ Register
+      </button>
     </div>
+  
+    </form>
+  </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/@electric-sql/pglite/dist/index.js"></script>
+      <!-- <form id="registration-form">
+        <input type="text" id="first-name" placeholder="First Name" required />
+        <input type="text" id="last-name" placeholder="Last Name" required />
+        <input type="text" id="disease" placeholder="Disease" required />
+        <input type="date" id="dob" placeholder="Date of Birth" required />
+        <input type="text" id="gender" placeholder="Gender" required />
+        <input type="email" id="email" placeholder="Email" />
+        <input type="tel" id="phone" placeholder="Phone" />
+        <textarea id="address" placeholder="Address"></textarea>
+      
+        <input type="file" id="report" accept="report/*" />
+        <iframe id="report-preview" style="display:none; width:100%; height:300px;"></iframe>
 
-    <script type="module">
+        <button type="submit">Register</button>
+      </form>
+      </main> -->
+      </div>
 
-      fetch('../components/header.html') // Adjust path if needed
-    .then(response => response.text())
-    .then(data => {
-      document.getElementById('common-header').innerHTML = data;
-    });
+      <script src="https://cdn.jsdelivr.net/npm/@electric-sql/pglite/dist/index.js"></script>
+
+      <script type="module">
+
+        fetch('../components/header.html') // Adjust path if needed
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('common-header').innerHTML = data;
+      });
 
 
-    import { db, initDatabase } from "../db/dbInit.js";
-    await initDatabase();
+      import { db, initDatabase } from "../db/dbInit.js";
+      await initDatabase();
 
-      async function addPatient(patient) {
-        await db.query(
-          `INSERT INTO patients (first_name, last_name,disease, date_of_birth, gender, email, phone, address,report)
-          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
-          [
-            patient.first_name,
-            patient.last_name,
-            patient.disease,
-            patient.date_of_birth,
-            patient.gender,
-            patient.email,
-            patient.phone,
-            patient.address,
-            patient.report,
-          
-          ]
-        );
-      }
+        async function addPatient(patient) {
+          await db.query(
+            `INSERT INTO patients (first_name, last_name,disease, date_of_birth, gender, email, phone, address,report)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+            [
+              patient.first_name,
+              patient.last_name,
+              patient.disease,
+              patient.date_of_birth,
+              patient.gender,
+              patient.email,
+              patient.phone,
+              patient.address,
+              patient.report,
+            
+            ]
+          );
+        }
 
- // Show form on card click
+  // Show form on card click
     document.querySelectorAll('.option-card').forEach(card => {
-      card.addEventListener('click', () => {
-        const type = card.getAttribute('data-type');
-        const section = document.getElementById('registration-section');
-        document.getElementById('form-title').textContent = `${type} Registration`;
-        section.style.display = 'block';
-        section.scrollIntoView({ behavior: 'smooth' });
-      });
+    card.addEventListener('click', () => {
+      const type = card.getAttribute('data-type');
+      const section = document.getElementById('registration-section');
+      document.getElementById('form-title').textContent = `${type} Registration`;
+      section.style.display = 'block';
+      section.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  document.getElementById("back-button").addEventListener("click", () => {
+    const section = document.getElementById("registration-section");
+    section.style.display = "none"; // Hide the form
+
+    // Optionally scroll back to the top or card selection area
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+        // Handle report preview
+        document.getElementById("report").addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const preview = document.getElementById("report-preview");
+          preview.src = reader.result;
+          preview.style.display = "block";
+        };
+        reader.readAsDataURL(file);
+      }
     });
 
-document.getElementById("back-button").addEventListener("click", () => {
-  const section = document.getElementById("registration-section");
-  section.style.display = "none"; // Hide the form
+    let reportBase64 = "";
 
-  // Optionally scroll back to the top or card selection area
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-});
-      // Handle report preview
-      document.getElementById("report").addEventListener("change", (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const preview = document.getElementById("report-preview");
-        preview.src = reader.result;
-        preview.style.display = "block";
-      };
-      reader.readAsDataURL(file);
-    }
-  });
-
-  let reportBase64 = "";
-
-      document.getElementById("report").addEventListener("change", (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        reportBase64 = reader.result; // Save the base64 string
-        const preview = document.getElementById("report-preview");
-        preview.src = reportBase64;
-        preview.style.display = "block";
-      };
-      reader.readAsDataURL(file); // Generates base64
-    }
-  });
-// Toggle form visibility and update title based on button clicked
-document.querySelectorAll(".option-btn").forEach(button => {
-  button.addEventListener("click", () => {
-    const type = button.dataset.type;
-    document.getElementById("form-title").textContent = `${type} Registration`;
-    document.getElementById("registration-section").style.display = "block";
-    window.scrollTo({ top: document.getElementById("registration-section").offsetTop, behavior: "smooth" });
-  });
-});
-
-      document.getElementById("registration-form").addEventListener("submit", async (e) => {
-        e.preventDefault();
-
-        const patient = {
-          first_name: document.getElementById("first-name").value,
-          last_name: document.getElementById("last-name").value,
-          disease: document.getElementById("disease").value,
-          date_of_birth: document.getElementById("dob").value,
-          gender: document.getElementById("gender").value,
-          email: document.getElementById("email").value,
-          phone: document.getElementById("phone").value,
-          address: document.getElementById("address").value,
-        report: reportBase64,
-
+        document.getElementById("report").addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          reportBase64 = reader.result; // Save the base64 string
+          const preview = document.getElementById("report-preview");
+          preview.src = reportBase64;
+          preview.style.display = "block";
         };
+        reader.readAsDataURL(file); // Generates base64
+      }
+    });
+  // Toggle form visibility and update title based on button clicked
+  document.querySelectorAll(".option-btn").forEach(button => {
+    button.addEventListener("click", () => {
+      const type = button.dataset.type;
+      document.getElementById("form-title").textContent = `${type} Registration`;
+      document.getElementById("registration-section").style.display = "block";
+      window.scrollTo({ top: document.getElementById("registration-section").offsetTop, behavior: "smooth" });
+    });
+  });
 
-        await addPatient(patient);
-        alert("Patient registered successfully!");
-        window.location.href = "RegisteredPatientList.html"; // Redirect to the list page
-      });
+        document.getElementById("registration-form").addEventListener("submit", async (e) => {
+          e.preventDefault();
 
-      initDatabase();
-    </script>
-  </body>
-  </html>
+          const patient = {
+            first_name: document.getElementById("first-name").value,
+            last_name: document.getElementById("last-name").value,
+            disease: document.getElementById("disease").value,
+            date_of_birth: document.getElementById("dob").value,
+            gender: document.getElementById("gender").value,
+            email: document.getElementById("email").value,
+            phone: document.getElementById("phone").value,
+            address: document.getElementById("address").value,
+          report: reportBase64,
+
+          };
+
+          await addPatient(patient);
+          alert("Patient registered successfully!");
+          window.location.href = "RegisteredPatientList.html"; // Redirect to the list page
+        });
+
+        initDatabase();
+      </script>
+    </body>
+    </html>

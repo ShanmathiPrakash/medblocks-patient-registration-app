@@ -21,10 +21,16 @@
 </div>
     <main class="main-content">
       <h1>SQL Query Executor</h1>
-      <form id="sql-form">
-        <textarea id="sql-query" name="sql-query" rows="6" placeholder="Write your SQL query here..."></textarea><br>
-        <button type="submit" margin-left:100px>Submit</button>
-      </form>
+  <form id="sql-form">
+  <label for="db-select">Choose Database:</label>
+  <select id="db-select"><br><br>
+    <option value="patient-db" style="margin-right:100px;">Patient DB</option>
+    <option value="doctor-db">Doctor DB</option>
+  </select>
+  <textarea id="sql-query" name="sql-query" rows="6" column="90" placeholder="Write your SQL query here..."></textarea><br>
+  <button type="submit">Submit</button>
+</form>
+      
 <div class="reference-section">
   <button id="toggle-reference-btn">📘 Show Reference Queries</button>
   <div id="reference-queries" style="display: none; margin-top: 10px;">
@@ -46,8 +52,10 @@ DELETE FROM patients WHERE name = 'Alice';
     <script type="module">
   import { PGlite } from "https://cdn.jsdelivr.net/npm/@electric-sql/pglite/dist/index.js";
 
-  const db = new PGlite("idb://patient-db");
-  
+  const dbs = {
+  "patient-db": new PGlite("idb://patient-db"),
+  "doctor-db": new PGlite("idb://doctor-db"),
+};
     window.addEventListener("DOMContentLoaded", async () => {
   // Load layout first
   await fetch('../components/layout.html')
@@ -65,25 +73,31 @@ document.getElementById("toggle-reference-btn").addEventListener("click", () => 
 
     // Attach event after DOM is available
     const form = document.getElementById("sql-form");
-   form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const query = document.getElementById("sql-query").value;
-          try {
-        const result = await db.query(query);
-        const modal = document.getElementById("popup-modal");
-        const popupText = document.getElementById("popup-text");if (result.rows.length === 0) {
-        popupText.textContent = "✅ Successfully Done!";
-      } else {
-        popupText.textContent = JSON.stringify(result.rows, null, 2);
-      }
+  form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const query = document.getElementById("sql-query").value;
+  const selectedDb = document.getElementById("db-select").value;
+  const db = dbs[selectedDb]; // get the correct DB instance
 
-  modal.style.display = "block";
-} catch (error) {
-  const modal = document.getElementById("popup-modal");
-  const popupText = document.getElementById("popup-text");
-  popupText.textContent = "Query Error:\n" + error.message;
-  modal.style.display = "block";
-}
+  try {
+    const result = await db.query(query);
+    const modal = document.getElementById("popup-modal");
+    const popupText = document.getElementById("popup-text");
+
+    if (result.rows.length === 0) {
+      popupText.textContent = "✅ Successfully Done!";
+    } else {
+      popupText.textContent = JSON.stringify(result.rows, null, 2);
+    }
+
+    modal.style.display = "block";
+  } catch (error) {
+    const modal = document.getElementById("popup-modal");
+    const popupText = document.getElementById("popup-text");
+    popupText.textContent = "Query Error:\n" + error.message;
+    modal.style.display = "block";
+  }
+});
 
 // Close button functionality
 document.querySelector(".sql-close-button").onclick = function () {
@@ -98,7 +112,7 @@ window.onclick = function (event) {
   }
 };
     });
-  });
+  
 </script>
   </body>
   </html>

@@ -1,4 +1,12 @@
 
+/* Styles for Header and side bar 
+Index page:
+1.Layout page
+2.Registration form
+3.Layout icons
+4.RegisteredPatientList
+5.Sql From 
+*/
 
 :root {
 
@@ -6,18 +14,18 @@
    * colors
    */
 
- --rich-black-fogra-29: hsl(260, 10%, 20%);           /* Deep metallic violet-grey */
-  --middle-blue-green_40: hsla(270, 50%, 85%, 0.4);    /* Soft lavender silver overlay */
-  --midnight-green: hsl(260, 12%, 35%);                /* Violet-silver base */
-  --midnight-green_a25: hsla(260, 12%, 35%, 0.25);     /* Transparent violet-silver */
-  --independece: hsl(265, 20%, 55%);                   /* Subtle silvered lavender */
-  --verdigris: hsl(275, 35%, 75%);                     /* Light silvery violet */
-  --ming: hsl(260, 20%, 65%);                          /* Silvery mauve */
-  --space-cadet: hsla(260, 15%, 45%, 1);               /* Dusty violet steel */
-  --eerie-black: hsl(260, 8%, 25%);                    /* Dark violet slate */
-  --alice-blue: hsl(265, 60%, 97%);                    /* Pale lavender white */
-  --gray-web: hsl(0, 0%, 80%);                         /* Pure silver-grey */
-  --gainsboro: hsl(270, 30%, 92%);                     /* Light violet-tinted silver */
+  --rich-black-fogra-29: hsl(221, 41%, 82%);
+  --middle-blue-green_40: hsla(174, 64%, 71%, 0.4);
+  --midnight-green: hsl(278, 21%, 41%);
+  --midnight-green_a25: hsla(186, 100%, 19%, 0.25);
+  --independece: hsl(236, 14%, 39%);
+  --verdigris: hsl(182, 100%, 35%);
+  --ming: hsl(186, 72%, 24%);
+  --space-cadet: hsla(226, 45%, 24%);
+  --eerie-black: hsl(0, 0%, 13%);
+  --alice-blue: hsl(187, 25%, 94%);
+  --gray-web: hsl(0, 0%, 50%);
+  --gainsboro: hsl(0, 0%, 87%);
   --white: hsl(0, 0%, 100%);
   --white_a20: hsla(0, 0%, 100%, 0.2);
   --white_a10: hsla(0, 0%, 100%, 0.1);
@@ -75,25 +83,6 @@
 }
 
 
-.logo {
-  display: flex;
-  align-items: center;      /* vertically center image and text */
-  gap: 8px;                 /* space between image and text */
-  text-decoration: none;
-}
-
-.logo-img {
-  width: 50px;              /* reduce size as needed */
-  height: auto;
-  display: block;
-}
-
-.logo-text {
-  color: white;
-  font-size: 2.2rem;
-  font-weight: bold;
-  user-select: none;
-}
 
 
 
@@ -218,7 +207,7 @@ body.nav-active { overflow: hidden; }
 }
 
 .btn {
-  background-color: var(--verdigris);
+  background-color: hsl(260.31deg 30.95% 72.84%);
   color: var(--white);
   font-weight: var(--fw-700);
   padding: 12px 36px;
@@ -400,6 +389,22 @@ body.nav-active { overflow: hidden; }
   padding: 10px 24px;
 }
 
+.navbar-link.active {
+  color: #00d1b2; /* or any highlight color */
+  font-weight: bold;
+  position: relative;
+}
+
+.navbar-link.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  height: 2px;
+  width: 100%;
+  background-color: #00d1b2; /* underline color */
+}
+
 .social-list {
   justify-content: center;
   gap: 20px;
@@ -566,7 +571,7 @@ body.nav-active { overflow: hidden; }
 }
 
 .tab-btn.active {
-  background-color: var(--verdigris);
+  background-color:hsl(260.31deg 30.95% 72.84%);
   color: var(--white);
 }
 
@@ -720,7 +725,7 @@ body.nav-active { overflow: hidden; }
 }
 
 .footer-brand {
-  background-color: var(--ming);
+  background-color:hsl(0, 0%, 93%);
   padding: 32px;
   border-radius: var(--radius-6);
 }
@@ -808,7 +813,23 @@ body.nav-active { overflow: hidden; }
 
 
 
+/* logo */
+.logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none; /* optional: removes underline */
+}
 
+.logo-img {
+  width: 50px; /* adjust this value as needed */
+  height: auto;
+  margin-right: 10px; /* space between image and text */
+}
+
+.logo-text {
+  font-size: 2.5rem; /* adjust size as needed */
+  color: #f8f7f7; /* or your desired color */
+}
 
 /*-----------------------------------*\
   #BACK TO TOP
@@ -1151,94 +1172,8 @@ body.nav-active { overflow: hidden; }
 }
 
 
-/* ************** */
-
-
-
 /*2. Registration form: */
    
-/* Main content styling */
- body {
-      font-family: Arial, sans-serif;
-      background-color: #f5f7fa;
-      margin: 0;
-      padding: 0;
-    }
-
-    .option-container {
-      max-width: 500px;
-      margin: 50px auto;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      padding: 0 20px;
-    }
-
-    .option-card {
-      background: linear-gradient(135deg, #7b2ff7, #f107a3);
-      color: white;
-      padding: 20px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 18px;
-      font-weight: bold;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-      opacity: 0;
-      transform: translateY(30px);
-      animation: fadeInUp 0.5s forwards;
-    }
-
-    .option-card:nth-child(1) { animation-delay: 0.1s; }
-    .option-card:nth-child(2) { animation-delay: 0.2s; }
-    .option-card:nth-child(3) { animation-delay: 0.3s; }
-    .option-card:nth-child(4) { animation-delay: 0.4s; }
-
-    @keyframes fadeInUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    form input, form textarea {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-
-    form button {
-      padding: 12px 20px;
-      background-color: #7b2ff7;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-
-    form button:hover {
-      background-color: #5e1bcf;
-    }
-
-    h1 {
-      text-align: center;
-      color: #333;
-    }
-
-.main-content {
-  margin-left: -10px; /* Offset for the sidebar */
-  margin-bottom:100px;
-    padding: 10px;
-  background-color:white;
- margin-top: 100px;
-  position: relative;
-   flex-grow: 1;
-  
-}
-
 *,
 *::before,
 *::after {
@@ -1260,13 +1195,12 @@ body.nav-active { overflow: hidden; }
   border-radius: 4px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   font-family: Arial, sans-serif;
-  height:400px;
 }
 
 /* Label Styling */
 label {
   font-weight: bold;
-  font-size: 3rem;
+  font-size: 1rem;
   text-align: right;
   padding-right: 1rem;
   display: flex;
@@ -1284,7 +1218,7 @@ input[type="file"] {
   padding: 0.8rem;
   border: 2px solid #ccc;
   border-radius: 4px;
-  font-size: 1.3rem;
+  font-size: 1rem;
   background-color: #f9f9f9;
 }
 
@@ -1315,8 +1249,149 @@ button[type="submit"]:hover {
     text-align: left;
   }
 }
+ 
+/* General Page Styles */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f5f7;
+  color: #333;
+}
 
-/* 4.RegisteredPatientList */
+main.main-content {
+  width: 1300px;
+  height:1900px;
+  margin: 40px auto;
+  background: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+  margin-top: 70px;
+  max-height: 80vh;
+  overflow-y: auto; 
+}
+
+h1, h2 {
+  text-align: left;
+  color: #4b3f72;
+}
+
+/* Option Cards */
+/* Base Reset */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f4f5f7;
+}
+
+
+.option-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 60px;
+  margin-top: 60px;
+}
+
+/* Card base */
+.option-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 320px;
+  height: 380px;
+  background: linear-gradient(135deg, #e8e8f8, #ffffff);
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  position: relative;
+  overflow: hidden;
+ 
+}
+
+ption-card:hover {
+  transform: translateY(-10px) scale(1.03);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+  background: linear-gradient(135deg, #d4d2f0, #f8f8ff);
+}
+
+/* Top Text */
+.card-title {
+  font-size: 1.7rem;
+  font-weight: bold;
+  color: #4b3b94;
+  animation: fadeInTop 0.8s ease;
+}
+
+/* Image in middle (using a div with bg-image) */
+.card-icon {
+  width: 160px;
+  height: 180px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  animation: popIn 0.6s ease;
+}
+
+/* Button at the bottom */
+.card-action {
+  padding: 10px 20px;
+  background-color: #674b94;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.card-action:hover {
+  background-color: #4b3b94;
+  transform: scale(1.1);
+}
+
+/* Icon images */
+.option-card[data-type="Urgent"] .card-icon {
+  background-image: url('/assets/images/urgentCheckUp.jpg');
+}
+.option-card[data-type="General Checkup"] .card-icon {
+  background-image: url('/assets/images/gendralCheckUp.png  ');
+}
+.option-card[data-type="Consultation"] .card-icon {
+  background-image: url('/assets/images/Consultancy.webp');
+}
+
+/* Animations */
+@keyframes fadeInTop {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+           /* ********** */
+
+           /* 4.RegisteredPatientList */
 /* Reset and basic styles */
 * {
   box-sizing: border-box;
@@ -1452,3 +1527,5 @@ tr:hover {
   border-radius: 5px;
   font-size: 16px;
 }
+
+/*********************/

@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Doctors List</title>
+  <link rel="stylesheet" href="../../assets/css/styles.css" />
+  <style>
+    body {
+      font-family: 'Open Sans', sans-serif;
+      margin: 20px;
+      background: #f9f9f9;
+      overflow: auto;
+    }
+    main {
+      max-width: 900px;
+      margin: auto;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #6200ea;
+    }
+    input#search-input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #eee;
+      text-align: left;
+      vertical-align: middle;
+    }
+    th {
+      background-color: #6200ea;
+      color: white;
+      font-weight: 600;
+    }
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+    .view-icon {
+      font-size: 18px;
+      color: #6200ea;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1050;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      overflow-y: auto;
+      padding: 40px 20px;
+      box-sizing: border-box;
+       overflow-y: auto;
+    }
+    .modal-content {
+      background-color: #fff;
+      border-left: 6px solid #6200ea;
+      max-width: 520px;
+      margin: auto;
+      padding: 30px 30px 40px 30px;
+      border-radius: 10px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+      position: relative;
+         overflow-y: auto;      /* Added */
+  max-height: 80vh;      /* Added */
+    }
+    .close {
+      position: absolute;
+      right: 20px;
+      top: 15px;
+      font-size: 24px;
+      color: #999;
+      cursor: pointer;
+      font-weight: bold;
+      user-select: none;
+    }
+    #modal-image {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 20px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #modal-title {
+      text-align: center;
+      margin-bottom: 8px;
+      color: #6200ea;
+      font-weight: 700;
+    }
+    .modal-content p {
+      margin: 5px 0;
+      font-size: 14px;
+      color: #333;
+    }
+    textarea {
+      width: 100%;
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+      resize: vertical;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 14px;
+    }
+    .send-message-btn {
+      background-color: #6200ea;
+      color: white;
+      padding: 10px 25px;
+      border: none;
+      border-radius: 6px;
+      margin-top: 20px;
+      float: right;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+    }
+    .send-message-btn:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <div id="common-header"></div>
+
+  <main class="main-content">
+    <h1>Doctors</h1>
+    <input type="text" id="search-input" placeholder="Search here.." onkeyup="filterTable()" />
+    <table>
+      <thead>
+        <tr>
+          <th>Person</th>
+          <th>Name</th>
+          <th>Specialization</th>
+          <th>Surgeon</th>
+          <th>Contact</th>
+          <th>Ward No</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="doctor-list"></tbody>
+    </table>
+  </main>
+
+  <!-- Modal -->
+  <div id="doctor-modal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="modal-title" aria-modal="true">
+    <div class="modal-content">
+      <span class="close" id="modal-close" role="button" aria-label="Close modal">&times;</span>
+      <img id="modal-image" alt="Doctor Image" />
+      <h2 id="modal-title"></h2>
+      <p><strong>Message:</strong></p>
+      <textarea id="message-textarea" placeholder="Type your message here..." rows="4"></textarea>
+      <button class="send-message-btn" id="send-message" disabled>
+        Send WhatsApp Message
+      </button>
+      <p><strong>Specialization:</strong> <span id="modal-specialization"></span></p>
+      <p><strong>Experience:</strong> <span id="modal-experience"></span></p>
+      <p><strong>Surgeon:</strong> <span id="modal-surgeon"></span></p>
+      <p><strong>Reception Contact:</strong> <span id="modal-contact"></span></p>
+      <p><strong>Ward No:</strong> <span id="modal-ward"></span></p>
+      <p><strong>Qualification:</strong> <span id="modal-qualification"></span></p>
+      <p><strong>Availability:</strong> <span id="modal-availability"></span></p>
+      <p><strong>Email:</strong> <span id="modal-email"></span></p>
+      
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@electric-sql/pglite/dist/index.js"></script>
+
+  <script type="module">
+    fetch('../components/header.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('common-header').innerHTML = data;
+      });
+
+    import { PGlite } from "https://cdn.jsdelivr.net/npm/@electric-sql/pglite/dist/index.js";
+
+    const db = new PGlite("idb://doctor-db-v2");
+
+    async function init() {
+      try {
+        await db.query(`
+          CREATE TABLE IF NOT EXISTS doctors (
+            id SERIAL PRIMARY KEY,
+            name TEXT NOT NULL,
+            specialization TEXT,
+            years_of_experience TEXT,
+            qualification TEXT,
+            email TEXT,
+            reception_contact TEXT,
+            ward_no TEXT,
+            availability_schedule TEXT,
+            is_surgeon INTEGER DEFAULT 0,
+            image_url TEXT
+          );
+        `);
+
+        // Clear table to start fresh:
+        await db.query("DELETE FROM doctors;");
+
+       const doctors = [
+  {
+    name: "Dr. Anna Smith",
+    specialization: "Cardiology",
+    years_of_experience: "12 years",
+    qualification: "MD, Cardiology",
+    email: "anna.smith@example.com",
+    reception_contact: "+14155552671",
+    ward_no: "12A",
+    availability_schedule: "Mon-Fri, 9am-5pm",
+    is_surgeon: 1,
+    image_url: "https://randomuser.me/api/portraits/women/44.jpg"
+  },
+  {
+    name: "Dr. John Doe",
+    specialization: "Neurology",
+    years_of_experience: "10 years",
+    qualification: "MBBS, MD Neurology",
+    email: "john.doe@example.com",
+    reception_contact: "+14155552672",
+    ward_no: "10B",
+    availability_schedule: "Tue-Thu, 10am-4pm",
+    is_surgeon: 0,
+    image_url: "https://randomuser.me/api/portraits/men/32.jpg"
+  },
+  {
+    name: "Dr. Maria Garcia",
+    specialization: "Pediatrics",
+    years_of_experience: "8 years",
+    qualification: "MBBS, MD Pediatrics",
+    email: "maria.garcia@example.com",
+    reception_contact: "+14155552673",
+    ward_no: "15C",
+    availability_schedule: "Mon-Wed, 8am-2pm",
+    is_surgeon: 0,
+    image_url: "https://randomuser.me/api/portraits/women/65.jpg"
+  },
+  {
+    name: "Dr. Ahmed Khan",
+    specialization: "Orthopedics",
+    years_of_experience: "15 years",
+    qualification: "MBBS, MS Orthopedics",
+    email: "ahmed.khan@example.com",
+    reception_contact: "+14155552674",
+    ward_no: "8D",
+    availability_schedule: "Mon-Fri, 11am-6pm",
+    is_surgeon: 1,
+    image_url: "https://randomuser.me/api/portraits/men/76.jpg"
+  },
+  {
+    name: "Dr. Li Wei",
+    specialization: "Dermatology",
+    years_of_experience: "9 years",
+    qualification: "MBBS, MD Dermatology",
+    email: "li.wei@example.com",
+    reception_contact: "+14155552675",
+    ward_no: "9B",
+    availability_schedule: "Tue-Fri, 9am-3pm",
+    is_surgeon: 0,
+    image_url: "https://randomuser.me/api/portraits/men/22.jpg"
+  },
+  // New members below
+  {
+    name: "Dr. Emily Clark",
+    specialization: "Gynecology",
+    years_of_experience: "7 years",
+    qualification: "MBBS, MD Gynecology",
+    email: "emily.clark@example.com",
+    reception_contact: "+14155552676",
+    ward_no: "14A",
+    availability_schedule: "Mon-Fri, 10am-4pm",
+    is_surgeon: 1,
+    image_url: "https://randomuser.me/api/portraits/women/47.jpg"
+  },
+  {
+    name: "Dr. Michael Brown",
+    specialization: "General Surgery",
+    years_of_experience: "20 years",
+    qualification: "MBBS, MS General Surgery",
+    email: "michael.brown@example.com",
+    reception_contact: "+14155552677",
+    ward_no: "5B",
+    availability_schedule: "Mon-Sat, 8am-3pm",
+    is_surgeon: 1,
+    image_url: "https://randomuser.me/api/portraits/men/54.jpg"
+  },
+  {
+    name: "Dr. Sophie Turner",
+    specialization: "Psychiatry",
+    years_of_experience: "11 years",
+    qualification: "MBBS, MD Psychiatry",
+    email: "sophie.turner@example.com",
+    reception_contact: "+14155552678",
+    ward_no: "11C",
+    availability_schedule: "Tue-Fri, 9am-5pm",
+    is_surgeon: 0,
+    image_url: "https://randomuser.me/api/portraits/women/72.jpg"
+  },
+  {
+    name: "Dr. Raj Patel",
+    specialization: "Urology",
+    years_of_experience: "13 years",
+    qualification: "MBBS, MS Urology",
+    email: "raj.patel@example.com",
+    reception_contact: "+14155552679",
+    ward_no: "7A",
+    availability_schedule: "Mon-Wed, 10am-6pm",
+    is_surgeon: 1,
+    image_url: "https://randomuser.me/api/portraits/men/33.jpg"
+  },
+  {
+    name: "Dr. Olivia Martinez",
+    specialization: "Endocrinology",
+    years_of_experience: "9 years",
+    qualification: "MBBS, MD Endocrinology",
+    email: "olivia.martinez@example.com",
+    reception_contact: "+14155552680",
+    ward_no: "13B",
+    availability_schedule: "Mon-Fri, 9am-4pm",
+    is_surgeon: 0,
+    image_url: "https://randomuser.me/api/portraits/women/56.jpg"
+  }
+];
+        for (const doc of doctors) {
+          await db.query(`
+            INSERT INTO doctors (
+              name, specialization, years_of_experience, qualification,
+              email, reception_contact, ward_no, availability_schedule,
+              is_surgeon, image_url
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10);
+          `, [
+            doc.name, doc.specialization, doc.years_of_experience,
+            doc.qualification, doc.email, doc.reception_contact,
+            doc.ward_no, doc.availability_schedule, doc.is_surgeon, doc.image_url
+          ]);
+        }
+
+        await loadDoctors();
+
+      } catch (e) {
+        console.error("DB init error:", e);
+      }
+    }
+
+    async function loadDoctors() {
+      try {
+        const result = await db.query("SELECT * FROM doctors ORDER BY name ASC");
+        renderDoctors(result.rows);
+      } catch (e) {
+        console.error("Failed to load doctors:", e);
+      }
+    }
+
+    window.filterTable = function () {
+      const input = document.getElementById("search-input");
+      const filter = input.value.toUpperCase();
+      const table = document.getElementById("doctor-list");
+      const rows = table.getElementsByTagName("tr");
+
+      for (let i = 0; i < rows.length; i++) {
+        const cells = rows[i].getElementsByTagName("td");
+        if (cells.length > 0) {
+          const nameCell = cells[1];
+          const nameText = nameCell.textContent || nameCell.innerText;
+          rows[i].style.display = nameText.toUpperCase().indexOf(filter) > -1 ? "" : "none";
+        }
+      }
+    };
+
+    function renderDoctors(doctors) {
+      const list = document.getElementById("doctor-list");
+      list.innerHTML = "";
+      doctors.forEach((doctor) => {
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+        <td><img src="${doctor.image_url}" alt="Dr. ${doctor.name}" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;" /></td>
+          <td>${doctor.name}</td>
+          <td>${doctor.specialization}</td>
+          <td>${doctor.is_surgeon ? "Yes" : "No"}</td>
+          <td>${doctor.reception_contact || "N/A"}</td>
+          <td>${doctor.ward_no || "N/A"}</td>
+          <td><span class="view-icon" role="button" tabindex="0" aria-label="View details of ${doctor.name}">🔍</span></td>
+        `;
+
+        row.querySelector('.view-icon').addEventListener('click', () => openModal(doctor));
+        row.querySelector('.view-icon').addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            openModal(doctor);
+          }
+        });
+
+        list.appendChild(row);
+      });
+    }
+
+    // Modal logic
+    const modal = document.getElementById('doctor-modal');
+    const modalCloseBtn = document.getElementById('modal-close');
+    const sendMsgBtn = document.getElementById('send-message');
+    const messageTextarea = document.getElementById('message-textarea');
+
+    function openModal(doctor) {
+      document.getElementById('modal-title').textContent = doctor.name;
+      document.getElementById('modal-specialization').textContent = doctor.specialization;
+      document.getElementById('modal-experience').textContent = doctor.years_of_experience;
+      document.getElementById('modal-surgeon').textContent = doctor.is_surgeon ? "Yes" : "No";
+      document.getElementById('modal-contact').textContent = doctor.reception_contact;
+      document.getElementById('modal-ward').textContent = doctor.ward_no;
+      document.getElementById('modal-qualification').textContent = doctor.qualification;
+      document.getElementById('modal-availability').textContent = doctor.availability_schedule;
+      document.getElementById('modal-email').textContent = doctor.email;
+      document.getElementById('modal-image').src = doctor.image_url || "";
+      document.getElementById('modal-image').alt = `Image of ${doctor.name}`;
+
+      messageTextarea.value = "";
+      sendMsgBtn.disabled = true;
+
+      // Save the current doctor's contact for sending message
+      sendMsgBtn.dataset.contact = doctor.reception_contact;
+
+      modal.style.display = "block";
+      modal.setAttribute('aria-hidden', 'false');
+      messageTextarea.focus();
+    }
+
+    modalCloseBtn.onclick = () => closeModal();
+    window.onclick = (event) => {
+      if (event.target === modal) {
+        closeModal();
+      }
+    };
+    window.onkeydown = (event) => {
+      if (event.key === "Escape" && modal.style.display === "block") {
+        closeModal();
+      }
+    };
+
+    function closeModal() {
+      modal.style.display = "none";
+      modal.setAttribute('aria-hidden', 'true');
+    }
+
+    // Enable send button only if message is typed
+    messageTextarea.addEventListener("input", () => {
+      sendMsgBtn.disabled = messageTextarea.value.trim() === "";
+    });
+
+    // Send WhatsApp message
+    sendMsgBtn.addEventListener("click", () => {
+      const contact = sendMsgBtn.dataset.contact;
+      const message = encodeURIComponent(messageTextarea.value.trim());
+      if (!contact) {
+        alert("Reception contact number is missing.");
+        return;
+      }
+      if (!message) {
+        alert("Please type a message before sending.");
+        return;
+      }
+      // WhatsApp URL format: https://wa.me/<number>?text=<encoded message>
+      // Number must be in international format without plus or spaces, e.g. 14155552671
+      const cleanNumber = contact.replace(/\D/g, '');
+      const url = `https://wa.me/${cleanNumber}?text=${message}`;
+      window.open(url, "_blank");
+    });
+
+    init();
+  </script>
+</body>
+</html>
