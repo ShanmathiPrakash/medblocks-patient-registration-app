@@ -181,7 +181,7 @@
   </style>
 </head>
 <body>
-
+ <div id="common-header"></div>
   <h1>Book an Appointment</h1>
 
   <div class="department-grid">
@@ -190,27 +190,27 @@
       <h3>General Checkup</h3>
     </div>
     <div class="department-card" onclick="showSpecialists('Cardiology')">
-      <img src="https://via.placeholder.com/200x130?text=Cardiology" />
+      <img src="../../assets/images/CardiologyDepartment.jpeg" />
       <h3>Heart Specialist</h3>
     </div>
     <div class="department-card" onclick="showSpecialists('Neurology')">
-      <img src="https://via.placeholder.com/200x130?text=Neurology" />
+      <img src="../../assets/images/NeurologyDepartment.jpeg" />
       <h3>Neurology</h3>
     </div>
     <div class="department-card" onclick="showSpecialists('General Surgery')">
-      <img src="https://via.placeholder.com/200x130?text=Surgery" />
+      <img src="../../assets/images/generalSurgeryDepartment.jpeg" />
       <h3>General Surgery</h3>
     </div>
     <div class="department-card" onclick="showSpecialists('Dermatology')">
-      <img src="https://via.placeholder.com/200x130?text=Dermatology" />
+      <img src="../../assets/images/DermatologyDepartment.jpeg" />
       <h3>Dermatology</h3>
     </div>
     <div class="department-card" onclick="showSpecialists('Eye Specialist')">
-      <img src="https://via.placeholder.com/200x130?text=Eye" />
+      <img src="../../assets/images/eyeDepartment.jpeg" />
       <h3>Eye Specialist</h3>
     </div>
     <div class="department-card" onclick="showSpecialists('Baby Specialist')">
-      <img src="https://via.placeholder.com/200x130?text=Eye" />
+      <img src="../../assets/images/babyDepartment.jpeg" />
       <h3>Baby Specialist</h3>
     </div>
   </div>
@@ -233,40 +233,54 @@
         <option value="11 AM - 12 PM">11 AM - 12 PM</option>
         <option value="2 PM - 3 PM">2 PM - 3 PM</option>
       </select>
-      <input type="tel" id="mobile" placeholder="Enter mobile number" />
+    <input type="tel" id="mobile" value="+91 " placeholder="Enter mobile number" />
+
       <button onclick="bookAppointment()">Confirm Booking</button>
     </div>
   </div>
 
   <script>
+     fetch('../components/header.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('common-header').innerHTML = data;
+      });
+      const mobileInput = document.getElementById('mobile');
+
+  mobileInput.addEventListener('input', () => {
+    if (!mobileInput.value.startsWith('+91')) {
+      mobileInput.value = '+91';
+    }
+  });
+  
     const specialists = {
       "General Checkup": [
-        { name: "Dr. Alex", image: "https://via.placeholder.com/100?text=Alex" },
-        { name: "Dr. Bella", image: "https://via.placeholder.com/100?text=Bella" }
+        { name: "Dr. Alex", image: "../../assets/images/doctor6.jpeg" },
+        { name: "Dr. Bella", image: "../../assets/images/doctor1.jpeg" }
       ],
       "Cardiology": [
-        { name: "Dr. Heartman", image: "https://via.placeholder.com/100?text=Heartman" },
-        { name: "Dr. Valve", image: "https://via.placeholder.com/100?text=Valve" }
+        { name: "Dr. Harini John", image: "../../assets/images/doctor2.jpeg" },
+        { name: "Dr. Mathiv Lawrance", image: "../../assets/images/doctor7.jpeg" }
       ],
       "Neurology": [
-        { name: "Dr. Neuro", image: "https://via.placeholder.com/100?text=Neuro" },
-        { name: "Dr. Brain", image: "https://via.placeholder.com/100?text=Brain" }
+        { name: "Dr. Raja Menaakchi", image: "../../assets/images/doctor3.jpeg" },
+        { name: "Dr. Liya Califa", image: "../../assets/images/doctor4.jpeg" }
       ],
       "General Surgery": [
-        { name: "Dr. Scalpel", image: "https://via.placeholder.com/100?text=Scalpel" },
-        { name: "Dr. Stitch", image: "https://via.placeholder.com/100?text=Stitch" }
+        { name: "Dr. Scalpel", image: "../../assets/images/doctor8.jpeg" },
+        { name: "Dr. Stitch", image: "../../assets/images/doctor9.jpeg" }
       ],
       "Dermatology": [
-        { name: "Dr. Abinav Ram", image: "https://via.placeholder.com/100?text=Skinner" },
-        { name: "Dr.Dhina",age: "https://via.placeholder.com/100?text=Glow" }
+        { name: "Dr. Abinav Ram", image: "../../assets/images/doctor10.jpeg" },
+        { name: "Dr.Dhina",image: "../../assets/images/doctor11.jpeg" }
       ],
       "Eye Specialist": [
-        { name: "Dr. Vision", image: "https://via.placeholder.com/100?text=Vision" },
-        { name: "Dr. Iris", image: "https://via.placeholder.com/100?text=Iris" }
+        { name: "Dr. Vision", image: "../../assets/images/doctor12.jpeg" },
+        { name: "Dr. Iris", image: "../../assets/images/doctor13.jpeg" }
       ],
        "Baby Specialist": [
-        { name: "Dr. Diya Ram", image: "https://via.placeholder.com/100?text=Vision" },
-        { name: "Dr. Dev Rani", image: "https://via.placeholder.com/100?text=Iris" }
+        { name: "Dr. Diya Ram", image: "../../assets/images/doctor5.jpeg" },
+        { name: "Dr. Dev Raja", image: "../../assets/images/doctor12.jpeg" }
       ]
     };
 
@@ -290,8 +304,7 @@
         `;
         container.appendChild(card);
       });
-       document.getElementById("specialist-section").scrollIntoView({ behavior: "smooth" });
-
+      document.getElementById("specialist-section").scrollIntoView({ behavior: "smooth" });
     }
 
     function openModal(doctorName) {
@@ -304,15 +317,50 @@
       document.getElementById("appointment-modal").style.display = "none";
     }
 
+    // Your Twilio credentials (replace with your actual credentials)
+    const accountSid = 'AC324d02d7fd6c4bc6e1bb83e4a047d5f7';
+    const authToken = '749d2f51051cd3d1243ebebba338cbbe';
+    const twilioPhoneNumber =  'whatsapp:+14155238886';
+ // Twilio sandbox WhatsApp number
+
     function bookAppointment() {
       const slot = document.getElementById("slot").value;
-      const mobile = document.getElementById("mobile").value;
-      if (!mobile) {
-        alert("Please enter a valid mobile number.");
-        return;
-      }
-      alert(`Appointment booked with ${selectedDoctor} at ${slot}\nMobile: ${mobile}`);
-      closeModal();
+      let mobile = document.getElementById("mobile").value.trim();
+
+    //   if (!mobile.match(/^\+\d{10,15}$/)) {
+    //     alert("Please enter a valid mobile number with country code, e.g. +1234567890");
+    //     return;
+    //   }
+ // Sanitize: remove any space in the number
+  mobile = mobile.replace(/\s+/g, ''); // Now mobile = '+919994871374'
+      const messageBody = `🏥 Greetings from Medblocks!!\n\nYour appointment is booked with ${selectedDoctor} at ${slot}.`;
+
+      // For demonstration: send message via Twilio API using fetch (note: this won't work in real browsers due to CORS and security)
+      fetch('https://api.twilio.com/2010-04-01/Accounts/' + accountSid + '/Messages.json', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Basic ' + btoa(accountSid + ':' + authToken),
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+          'From': twilioPhoneNumber,
+          'To': 'whatsapp:' + mobile,
+          'Body': messageBody
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.sid) {
+          alert(`Appointment booked successfully!`);
+          closeModal();
+        } else {
+          alert('Failed to send message: ' + (data.message || 'Unknown error'));
+        }
+      })
+      .catch(error => {
+        console.error('Error sending message:', error);
+        alert('Error sending message.');
+      });
     }
   </script>
 </body>

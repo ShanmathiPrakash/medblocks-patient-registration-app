@@ -5,7 +5,22 @@
   <title>Doctors List</title>
   <link rel="stylesheet" href="../../assets/css/styles.css" />
   <style>
+.view-icon:hover {
+  color: #7a42f4;
+  transform: scale(1.2);
+  transition: 0.2s ease;
+}
+.modal-field {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 8px;
+}
 
+.modal-field strong {
+  min-width: 140px;
+  font-weight: 600;
+}
   </style>
 </head>
 <body>
@@ -26,7 +41,7 @@
           <th>Surgeon</th>
           <th>Contact</th>
           <th>Ward No</th>
-          <th>Action</th>
+          <th>Message</th>
         </tr>
       </thead>
       <tbody id="doctor-list"></tbody>
@@ -45,14 +60,32 @@
       <button class="send-message-btn" id="send-message" disabled>
         Send WhatsApp Message
       </button>
-      <p><strong>Specialization:</strong> <span id="modal-specialization"></span></p>
+     <div class="modal-field">
+         <strong>Specialization:</strong> <span id="modal-specialization"></span>
+        </div>
+        <div class="modal-field">
       <p><strong>Experience:</strong> <span id="modal-experience"></span></p>
-      <p><strong>Surgeon:</strong> <span id="modal-surgeon"></span></p>
-      <p><strong>Reception Contact:</strong> <span id="modal-contact"></span></p>
-      <p><strong>Ward No:</strong> <span id="modal-ward"></span></p>
-      <p><strong>Qualification:</strong> <span id="modal-qualification"></span></p>
-      <p><strong>Availability:</strong> <span id="modal-availability"></span></p>
-      <p><strong>Email:</strong> <span id="modal-email"></span></p>
+      </div>
+       <div class="modal-field">
+        <p><strong>Surgeon:</strong> <span id="modal-surgeon"></span></p>
+       </div>
+      <div class="modal-field">
+         <p><strong>Reception Contact:</strong> <span id="modal-contact"></span></p>
+      </div>
+      <div class="modal-field">
+         <p><strong>Ward No:</strong> <span id="modal-ward"></span></p>
+      </div>
+      <div class="modal-field">
+        <p><strong>Qualification:</strong> <span id="modal-qualification"></span></p>
+      </div>
+      
+      <div class="modal-field">
+        <p><strong>Availability:</strong> <span id="modal-availability"></span></p>
+    </div>
+      <div class="modal-field">
+        <p><strong>Email:</strong> <span id="modal-email"></span></p>
+    </div>
+      
       
     </div>
   </div>
@@ -135,8 +168,8 @@
           <td>${doctor.is_surgeon ? "Yes" : "No"}</td>
           <td>${doctor.reception_contact || "N/A"}</td>
           <td>${doctor.ward_no || "N/A"}</td>
-          <td><span class="view-icon" role="button" tabindex="0" aria-label="View details of ${doctor.name}">🔍</span></td>
-        `;
+         <td><span class="view-icon" role="button" tabindex="0" aria-label="View details of ${doctor.name}">📄🔍</span></td>
+  `;
 
         row.querySelector('.view-icon').addEventListener('click', () => openModal(doctor));
         row.querySelector('.view-icon').addEventListener('keydown', (e) => {
