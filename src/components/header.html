@@ -5,7 +5,13 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<style>
+  .navbar-link.active {
+  color: #00b894; /* Example highlight color */
+  font-weight: 700;
+  border-bottom: 2px solid #00b894;
+}
+</style>
   <!-- 
     - primary meta tags
   -->
@@ -63,10 +69,11 @@
       <ul class="navbar-list">
         <li class="navbar-item"><a href="../index.html" class="navbar-link title-md">Home</a></li>
         <li class="navbar-item"><a href="/src/pages/DoctorsList.html" class="navbar-link title-md">Doctors</a></li>
-        <li class="navbar-item"><a href="#" class="navbar-link title-md">Services</a></li>
-        <li class="navbar-item"><a href="#" class="navbar-link title-md">Blog</a></li>
-        <li class="navbar-item"><a href="#" class="navbar-link title-md">Contact</a></li>
-        
+        <li class="navbar-item"><a href="/src/pages/RegistrationForm.html" class="navbar-link title-md">Register</a></li>
+          <li class="navbar-item">
+            <a href="/src/pages/AdminPage.html" class="navbar-link title-md">Admin</a>
+          </li>
+     
       </ul>
 
       <ul class="social-list">
@@ -87,4 +94,19 @@
     <div class="overlay" data-nav-toggler data-overlay></div>
 
   </div>
+  <script>
+   document.addEventListener('DOMContentLoaded', () => {
+  const currentPath = window.location.pathname.toLowerCase();
+  const navLinks = document.querySelectorAll('.navbar-link');
+
+  navLinks.forEach(link => {
+    const linkPath = new URL(link.href).pathname.toLowerCase();
+
+    // Use endsWith for more forgiving matching
+    if (currentPath.endsWith(linkPath)) {
+      link.classList.add('active');
+    }
+  });
+});
+  </script>
 </header>

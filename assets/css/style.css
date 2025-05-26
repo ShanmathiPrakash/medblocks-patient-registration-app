@@ -329,7 +329,7 @@ body.nav-active { overflow: hidden; }
 
 .header.active {
   position: fixed;
-  background-color: var(--rich-black-fogra-29);
+  background-color: hsl(276.23deg 18.22% 50.11%);
   animation: headerActive 0.5s ease forwards;
 }
 
@@ -360,7 +360,7 @@ body.nav-active { overflow: hidden; }
 .navbar {
   right: -300px;
   max-width: 300px;
-  background-color: var(--rich-black-fogra-29);
+ background-color: hsl(281.77deg 17.84% 46.9%);
   z-index: 3;
   transition: 0.25s var(--cubic-in);
   visibility: hidden;
@@ -719,7 +719,7 @@ body.nav-active { overflow: hidden; }
 }
 
 .footer-brand {
-  background-color:hsl(0, 0%, 93%);
+  background-color:hsl(0, 1%, 55%);
   padding: 32px;
   border-radius: var(--radius-6);
 }
@@ -1348,7 +1348,7 @@ ption-card:hover {
 }
 
 /* Icon images */
-.option-card[data-type="Urgent"] .card-icon {
+.option-card[data-type="Master Checkup"] .card-icon {
   background-image: url('/assets/images/urgentCheckUp.jpg');
 }
 .option-card[data-type="General Checkup"] .card-icon {
@@ -1855,3 +1855,123 @@ tr:hover {
   background-color: #ccc;
   cursor: not-allowed;
 }
+
+.custom-alert {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+}
+
+.alert-content {
+  background: #fff;
+  padding: 20px 30px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  max-width: 400px;
+  width: 90%;
+}
+
+#alert-ok-btn {
+  margin-top: 15px;
+  background-color: #665b7c;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+    display: inline-block; /* Ensures it's centered as a block-level element */
+  margin: 15px auto 0;    /* Top margin + auto on sides to center */
+}
+.alert-button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+#alert-ok-btn:hover {
+  background-color: #218838;
+}
+
+
+
+/* 5.Sql From  */
+ #sql-form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 2rem;
+    font-family: Arial, sans-serif;
+    margin-top: 15px;
+  } 
+  textarea { 
+    width: 84%; 
+    margin-bottom: 10px;
+    margin-top: 18px;
+    margin-right: 200px;
+  }
+pre { 
+  background-color: #f4f4f4; 
+  padding: 10px; 
+  border: 1px solid #ddd; 
+}
+
+#sql-form button { 
+  background-color: #007bff; color: white; 
+  border: none; cursor: pointer; 
+  margin-left: 700px;  
+  padding: 4px 8px; 
+  text-align: center;}
+
+#sql-form button:hover { 
+  background-color: #0056b3; 
+}
+
+
+.sidebar {
+  grid-column: 1;
+}
+
+.main-content {
+  grid-column: 2;
+}
+
+
+.sql-modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+}
+
+.sql-modal-content {
+  background-color: white;
+  margin: 15% auto;
+  padding: 20px;
+  border-radius: 8px;
+  width: 50%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: left;
+  white-space: pre-wrap;
+}
+
+.sql-close-button {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
