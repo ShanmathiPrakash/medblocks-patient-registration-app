@@ -3,15 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <title>SQL Query Executor</title>
-  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../assets/css/styles.css">
 </head>
 <body>
-  <div id="common-layout"></div>
-
-  <div class="container">
-    <aside class="sidebar">
-      <!-- Sidebar content here -->
-    </aside>
+<div id="common-header"></div>
     <!-- Custom Modal -->
 <div id="popup-modal" class="sql-modal">
   <div class="sql-modal-content">
@@ -58,11 +53,11 @@ DELETE FROM patients WHERE name = 'Alice';
 };
     window.addEventListener("DOMContentLoaded", async () => {
   // Load layout first
-  await fetch('../components/layout.html')
-    .then(response => response.text())
-    .then(html => {
-      document.getElementById('common-layout').innerHTML = html;
-    });
+fetch('../components/header.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('common-header').innerHTML = data;
+      });
 
 document.getElementById("toggle-reference-btn").addEventListener("click", () => {
   const refSection = document.getElementById("reference-queries");

@@ -3,11 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <title>Registered Patients</title>
-  <link rel="stylesheet" href="../css/styles.css">
- 
+  <link rel="stylesheet" href="../../assets/css/styles.css">
+ <style>
+  .modal-field {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.modal-field strong {
+  min-width: 140px;
+  font-weight: 600;
+}
+ </style>
 </head>
 <body>
- <div id="common-layout"></div>
+<div id="common-header"></div>
+
 <div class="container">
     <aside class="sidebar">
       <!-- Sidebar content here -->
@@ -16,8 +29,10 @@
 
   <h1>Registered Patients</h1>
 
-  <input type="text" id="search-input" placeholder="Search here.." onkeyup="filterTable()">
-
+  <div class="search-bar-wrapper">
+    <input type="text" id="search-input" placeholder="Search here.." onkeyup="filterTable()" />
+    </div>
+ 
   <table>
     <thead>
       <tr>
@@ -35,24 +50,37 @@
     <div class="modal-content">
       <span class="close">&times;</span>
       <h2>Patient Details</h2>
-      <p><strong>Name:</strong> <span id="modal-name"></span></p>
-      <p><strong>Phone:</strong> <span id="modal-phone"></span></p>
-      <p><strong>Email:</strong> <span id="modal-email"></span></p>
-      <p><strong>Address:</strong> <span id="modal-address"></span></p>
-      <p><strong>Date of Birth:</strong> <span id="modal-dob"></span></p>
-      <p><strong>Gender:</strong> <span id="modal-gender"></span></p>
-        <p><strong>Disease:</strong> <span id="modal-disease"></span></p>
-     
-
-    <p><strong>Message:</strong></p>
-    <textarea id="message-textarea" placeholder="Type your message here..." rows="4" cols="50"></textarea>
-<button class="send-message-btn" id="send-message" disabled style="margin-left: 370px;">Send WhatsApp Message</button>
-
- <p><strong>Documents:</strong></p>
+      <p><strong>Image:</strong></p>
         <div id="modal-report-container">
           <img id="modal-report-img" style="max-width:100%; display:none;" />
           <iframe id="modal-report-pdf" style="width:100%; height:300px;  display:none;" frameborder="0"></iframe>
         </div>
+         <p><strong>Message:</strong></p>
+    <textarea id="message-textarea" placeholder="Type your message here..." rows="4" cols="50"></textarea>
+<button class="send-message-btn" id="send-message" disabled style="margin-left: 370px;height: 40px;">Send WhatsApp</button>
+
+<div class="modal-field">
+       <strong>Name:</strong> <span id="modal-name"></span>
+      </div>
+    <div class="modal-field">
+       <strong>Phone:</strong> <span id="modal-phone">
+      </div>
+      <div class="modal-field">
+      <strong>Email:</strong> <span id="modal-email">
+      </div>
+      <div class="modal-field">
+     <strong>Address:</strong> <span id="modal-address">
+      </div>
+      <div class="modal-field">
+      <strong>Date of Birth:</strong> <span id="modal-dob">
+      </div>
+        <div class="modal-field">
+      <strong>Gender:</strong> <span id="modal-gender"></span>
+      </div>
+        <div class="modal-field">
+    <strong>Disease:</strong> <span id="modal-disease">
+      </div>
+ 
     </div>
   </div>
 </main>
@@ -62,10 +90,10 @@
   
   <script type="module">
 
-  fetch('../components/layout.html')
+ fetch('../components/header.html')
       .then(response => response.text())
       .then(data => {
-        document.getElementById('common-layout').innerHTML = data;
+        document.getElementById('common-header').innerHTML = data;
       });
 
     import { PGlite } from "https://cdn.jsdelivr.net/npm/@electric-sql/pglite/dist/index.js";

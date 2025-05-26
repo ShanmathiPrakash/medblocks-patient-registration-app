@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="../../assets/css/styles.css" />
+  <title>Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f4f4f4;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    #common-header {
+      width: 100%;
+    }
+
+    .main-container {
+      display: flex;
+      flex: 1;
+    }
+
+    .left-panel {
+      flex: 1;
+      text-align: center;
+      padding: 80px 20px;
+    }
+
+    .left-panel h1 {
+      margin-bottom: 40px;
+      font-size: 2em;
+    }
+
+    .tab-option {
+      display: block;
+      width: 250px;
+      margin: 20px auto;
+      padding: 15px 20px;
+      background-color: #007BFF;
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+      font-size: 18px;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .tab-option::after {
+      content: "➜";
+      position: absolute;
+      right: 20px;
+      transition: transform 0.3s ease;
+    }
+
+    .tab-option:hover {
+      background-color: #0056b3;
+      transform: translateX(5px);
+    }
+
+    .tab-option:hover::after {
+      transform: translateX(5px);
+    }
+
+    .right-panel {
+      flex: 1;
+      background: url('https://via.placeholder.com/600x600') no-repeat center center;
+      background-size: cover;
+    }
+
+    @media (max-width: 768px) {
+      .main-container {
+        flex-direction: column;
+      }
+      .right-panel {
+        height: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="common-header"></div>
+
+  <div class="main-container">
+    <div class="left-panel">
+      <h1>Choose an Option</h1>
+      <a href="RegisteredPatientList.html" class="tab-option">Patient List</a>
+      <a href="sql.html" class="tab-option">SQL Form</a>
+    </div>
+
+    <div class="right-panel"></div>
+  </div>
+
+  <script>
+    fetch('../components/header.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('common-header').innerHTML = data;
+      });
+  </script>
+</body>
+</html>
