@@ -113,8 +113,6 @@ Video consultations
 Backend Setup
 
 
-
-
 II. Difficulties Faced:
 1.Setting Indexed DataBase
 
