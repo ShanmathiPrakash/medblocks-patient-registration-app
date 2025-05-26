@@ -328,6 +328,14 @@
     function bookAppointment() {
       const slot = document.getElementById("slot").value;
       let mobile = document.getElementById("mobile").value.trim();
+        document.getElementById("alert-message").textContent = "✅ Appointment booked successfully!";
+      const alertBox = document.getElementById("custom-alert");
+      alertBox.style.display = "flex";
+
+      document.getElementById("alert-ok-btn").onclick = () => {
+        alertBox.style.display = "none";
+        // Optional: Redirect or reset form
+      };
 
     //   if (!mobile.match(/^\+\d{10,15}$/)) {
     //     alert("Please enter a valid mobile number with country code, e.g. +1234567890");
