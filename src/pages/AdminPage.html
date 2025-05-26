@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <link rel="stylesheet" href="../../assets/css/styles.css" />
-  <title>Dashboard</title>
+  <title>Admin</title>
   <style>
-    body {
+    /* Scoped to admin page only */
+    #admin-page {
       font-family: Arial, sans-serif;
       margin: 0;
       background-color: #f4f4f4;
@@ -13,83 +14,142 @@
       min-height: 100vh;
     }
 
-    #common-header {
+    #admin-page #common-header {
       width: 100%;
     }
 
-    .main-container {
+    #admin-page .main-container {
       display: flex;
       flex: 1;
     }
 
-    .left-panel {
+    #admin-page .left-panel {
       flex: 1;
-      text-align: center;
-      padding: 80px 20px;
+      padding: 80px 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
 
-    .left-panel h1 {
+    #admin-page .left-panel h1 {
       margin-bottom: 40px;
       font-size: 2em;
     }
 
-    .tab-option {
+    /* Button with animated container */
+    #admin-page .tab-row {
+      display: flex;
+      align-items: center;
+      margin: 20px 0;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInSlideUp 0.8s forwards;
+    }
+
+    #admin-page .tab-row:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    #admin-page .tab-row:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    #admin-page .tab-option {
       display: block;
-      width: 250px;
-      margin: 20px auto;
-      padding: 15px 20px;
+      width: 300px;
+      padding: 15px 25px;
       background-color: #007BFF;
       color: white;
       text-decoration: none;
       border-radius: 10px;
       font-size: 18px;
-      position: relative;
+      font-weight: bold;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
       transition: all 0.3s ease;
     }
 
-    .tab-option::after {
-      content: "➜";
-      position: absolute;
-      right: 20px;
-      transition: transform 0.3s ease;
-    }
-
-    .tab-option:hover {
+    #admin-page .tab-option:hover {
       background-color: #0056b3;
       transform: translateX(5px);
     }
 
-    .tab-option:hover::after {
-      transform: translateX(5px);
-    }
+    #admin-page .arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  font-weight: bold;
+  margin-left: 12px;
+  width: 44px;
+  height: 44px;
+  background: linear-gradient(135deg, #007BFF, #0056b3);
+  color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
-    .right-panel {
+#admin-page .tab-row:hover .arrow {
+  transform: translateX(6px) scale(1.1);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+
+    #admin-page .right-panel {
       flex: 1;
       background: url('https://via.placeholder.com/600x600') no-repeat center center;
       background-size: cover;
     }
 
+    @keyframes fadeInSlideUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     @media (max-width: 768px) {
-      .main-container {
+      #admin-page .main-container {
         flex-direction: column;
       }
-      .right-panel {
+
+      #admin-page .left-panel {
+        padding: 40px 20px;
+      }
+
+      #admin-page .right-panel {
         height: 300px;
+      }
+
+      #admin-page .tab-option {
+        width: 90%;
       }
     }
   </style>
 </head>
 <body>
-  <div id="common-header"></div>
+  <div id="admin-page">
+    <div id="common-header"></div>
 
-  <div class="main-container">
-    <div class="left-panel">
-      <h1>Choose an Option</h1>
-      <a href="RegisteredPatientList.html" class="tab-option">Patient List</a>
-      <a href="sql.html" class="tab-option">SQL Form</a>
+    <div class="main-container">
+      <div class="left-panel">
+            <h1>Admin Functions</h1>
+
+        <div class="tab-row">
+          <a href="RegisteredPatientList.html" class="tab-option">Patient List</a>
+        <div class="arrow">⮞</div>
+        </div>
+
+        <div class="tab-row">
+          <a href="sql.html" class="tab-option">SQL Form</a>
+           <div class="arrow">⮞</div>
+        </div>
+      </div>
+
+      <div class="right-panel"></div>
+        <img src="../../assets/images/laptop2.jpg" alt="Admin Icon" class="admin-image" style="height: 600px;width: 700px;" />
     </div>
-
-    <div class="right-panel"></div>
   </div>
 
   <script>
